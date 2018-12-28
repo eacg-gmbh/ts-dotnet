@@ -21,10 +21,11 @@ Provide a folder to secure temporary files, e.g. c:\temp\buildtasks
 5.	Execute at CommandPromt with administrator rights
 
   `tfx login --auth-type basic`
-  for a Service URL use a string such as 'http://studio:8080/tfs/DefaultCollection'  All the other parameters are optional)
+  for a Service URL use a string such as 'http://studio:8080/tfs/DefaultCollection'  
+  All the other parameters are optional
 
   `tfx build tasks create `
-  Use “CheckLicenses” as a first parameter (Name
+  Use “CheckLicenses” as a first parameter name
 
 6.	Open file CheckLicenses/task.json and copy the value of the “id” field
 
@@ -33,10 +34,12 @@ Provide a folder to secure temporary files, e.g. c:\temp\buildtasks
 8.	Execute in CommandPromt with administrator rights:
 
  ` tfx build tasks upload --task-path CheckLicenses `
-  or if the task already on the TFS and you want update it:
+ 
+ or if the task already on the TFS and you want update it:
+ 
  `tfx build tasks upload --task-path CheckLicenses --overwrite`
     
-9.	Do to TFS and configure Build (the custom Task mast be available)
+9.	Change to TFS and configure your build using the bew custom task (should be available)
 
 ## Visual Studio Integration
 
