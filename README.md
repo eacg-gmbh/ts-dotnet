@@ -1,6 +1,6 @@
 # TrustSource nuget integration
 
-This repo contains two plugins. One for Visua Studio, the other for Teamfoundation Server/Services. Both have been designed to support .NET-framework. An anhancement for .Net-Core is currently under development.
+This repo contains two plugins. One for Visual Studio, the other for Teamfoundation Server/Services. Both have been designed to support .NET-framework. An enhancement for .Net-Core is currently under development.
 
 ## TFS Integration
 
@@ -13,12 +13,12 @@ If not yet available on the server, download nodeJS at https://nodejs.org/en/dow
 Go to https://github.com/Microsoft/tfs-cli to install the TFS command line interface.
 
 3.	Configure basic authorization
-See https://github.com/Microsoft/tfs-cli/blob/master/docs/configureBasicAuth.md on how to configure your authentiication.
+See https://github.com/Microsoft/tfs-cli/blob/master/docs/configureBasicAuth.md on how to configure your authentication.
 
 4.	Create temporary files folder 
 Provide a folder to secure temporary files, e.g. c:\temp\buildtasks
 
-5.	Execute at CommandPromt with administrator rights
+5.	Execute at command prompt with administrator rights
 
   `tfx login --auth-type basic`
   for a Service URL use a string such as 'http://studio:8080/tfs/DefaultCollection'  
@@ -29,9 +29,9 @@ Provide a folder to secure temporary files, e.g. c:\temp\buildtasks
 
 6.	Open file CheckLicenses/task.json and copy the value of the “id” field
 
-7.	Open task.json file from the folder you get from me (test package) and paste the copied “id” value there.
+7.	Open task.json file and paste the copied “id” value there.
 
-8.	Execute in CommandPromt with administrator rights:
+8.	Execute at command prompt with administrator rights:
 
  ` tfx build tasks upload --task-path CheckLicenses `
  
@@ -39,7 +39,7 @@ Provide a folder to secure temporary files, e.g. c:\temp\buildtasks
  
  `tfx build tasks upload --task-path CheckLicenses --overwrite`
     
-9.	Change to TFS and configure your build using the bew custom task (should be available)
+9.	Change to TFS and configure your build using the new custom task (should be available)
 
 ## Visual Studio Integration
 
@@ -47,5 +47,5 @@ tbc.
 
 ## Contact & Questions
 
-Feel free contacting us for more details and questions. We are eager to learn more about your demand. Send an email to support (at) trustsource,io. 
+Feel free contacting us for more details and questions. We are eager to learn more about your demand. Send an email to support (at) trustsource.io. 
 
