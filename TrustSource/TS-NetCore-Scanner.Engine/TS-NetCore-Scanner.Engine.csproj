@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <RootNamespace>TS_NetCore_Scanner.Engine</RootNamespace>
+    <AssemblyName>TS.NetCore.Scanner.Engine</AssemblyName>
+    <SignAssembly>true</SignAssembly>
+    <DelaySign>false</DelaySign>
+    <AssemblyOriginatorKeyFile>TS-NetCore-Scanner.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="NuGet.ProjectModel" Version="4.9.2" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <RootNamespace>TS_NetCore_Scanner.ConsoleApp</RootNamespace>
+    <AssemblyName>TS-NetCore-Scanner</AssemblyName>
+    <StartupObject>TS_NetCore_Scanner.ConsoleApp.Program</StartupObject>
+    <SignAssembly>true</SignAssembly>
+    <DelaySign>false</DelaySign>
+    <AssemblyOriginatorKeyFile>TrustSourceConsole.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.CommandLineUtils" Version="1.1.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\TS-NetCore-Scanner.Engine\TS-NetCore-Scanner.Engine.csproj" />
+  </ItemGroup>
+
+</Project>
