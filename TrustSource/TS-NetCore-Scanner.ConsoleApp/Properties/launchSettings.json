@@ -3,7 +3,7 @@
     "TS-NetCore-Scanner.ConsoleApp": {
       "commandName": "Project",
       "commandLineArgs": "-user \"nabeel@relliks.com\" -key \"12778010-719a-40bb-ba95-36ecf5a9c975\"",
-      "workingDirectory": "C:\\Users\\inabe\\Desktop\\ecs-nuget-master\\ecs-nuget-master\\TS-DotNetCore2-2-Sample"
+      "workingDirectory": "..\\..\\TS-DotNetCore2-2-Sample"
     }
   }
 }
