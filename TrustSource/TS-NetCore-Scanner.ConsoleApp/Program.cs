@@ -16,7 +16,7 @@ namespace TS_NetCore_Scanner.ConsoleApp
             app.Name = "TS-NetCore-Scanner";
             app.Description = ".NET Core project dependency graph and send to TrustSource";
             app.ExtendedHelpText = "Scan .NET Core project dependency graph and send to TrustSource"
-                + Environment.NewLine + "Depending on your OS, you may need to execute the application as TS-NetCore-Scanner.exe or 'dotnet TS-NetCore-Scanne.dll'";
+                + Environment.NewLine + "you may need to execute the application as 'dotnet TS-NetCore-Scanne.dll'";
 
             // Set the arguments to display the description and help text
             app.HelpOption("-?|-h|--help");
@@ -30,12 +30,11 @@ namespace TS_NetCore_Scanner.ConsoleApp
             var projectPathOption = app.Option("-p|--path <optionvalue>", ".Net Core Project Path", CommandOptionType.SingleValue);
             var trustSourceUserName = app.Option("-user|--username <optionvalue>", "TrustSource Username", CommandOptionType.SingleValue);
             var trustSourceApiKey = app.Option("-key|--ApiKey <optionvalue>", "TrustSource Api Key", CommandOptionType.SingleValue);
-
-            //var trustSourceApiKey = app.Argument("trustSourceApiKey", "TrustSource Api Key for authentication");
-            //var trustSourceUserName = app.Argument("trustSourceUsername", "TrustSource username");
+            var trustSourceApiUrl = app.Option("-url|--ApiUrl <optionvalue>", "TrustSource Api Url", CommandOptionType.SingleValue);
 
             // When no commands are specified, this block will execute.
             // This is the main "command"
+
             app.OnExecute(() =>
             {
                 if (trustSourceUserName.HasValue() && trustSourceApiKey.HasValue())
@@ -51,12 +50,11 @@ namespace TS_NetCore_Scanner.ConsoleApp
                         projectPath = Environment.CurrentDirectory;
                     }
 
-                    //Console.WriteLine(trustSourceUserName.Value);
-                    //Console.WriteLine(trustSourceApiKey.Value);
-                    //Console.WriteLine(projectPath);
+                    string apiurl = "";
+                    trustSourceApiUrl.TryParse(apiurl);
 
                     Console.WriteLine("Starting Scanning");
-                    TS_NetCore_Scanner.Engine.Scanner.Initiate(projectPath, trustSourceUserName.Value(), trustSourceApiKey.Value());
+                    TS_NetCore_Scanner.Engine.Scanner.Initiate(projectPath, trustSourceUserName.Value(), trustSourceApiKey.Value(), apiurl);
                     Console.WriteLine("Scan completed and succefully delivered");
                 }
                 else

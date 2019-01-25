@@ -10,10 +10,15 @@ namespace TS_NetCore_Scanner.Engine
     {
         private static string TrustSourceApiUrl = $"https://app.trustsource.io/api/v1"; //"https://test-green.trustsource.io/api/v1";
 
-        public static string PostScan(string targetJson, string trustSourceUserName, string trustSourceApikey)
+        public static string PostScan(string targetJson, string trustSourceUserName, string trustSourceApikey, string trustSourceApiUrl = "")
         {
             try
             {
+                if (!string.IsNullOrEmpty(trustSourceApiUrl))
+                {
+                    TrustSourceApiUrl = trustSourceApiUrl;
+                }
+
                 var client = new WebClient();
 
                 client.Headers.Add("Content-Type", "application/json");

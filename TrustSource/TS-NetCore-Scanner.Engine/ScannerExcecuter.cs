@@ -8,10 +8,10 @@ namespace TS_NetCore_Scanner.Engine
 {
     internal class ScannerExcecuter
     {
-        internal static Target ProcessDependencies(PackageSpec project)
+        internal static Target ProcessDependencies(string solutionName, PackageSpec project)
         {
             Target projectTarget = new Target();
-            projectTarget.project = project.Name;
+            projectTarget.project = solutionName;
             projectTarget.moduleId = $"netcore:{project.Name}";
             projectTarget.module = project.Name;
             projectTarget.release = project.Version.ToFullString();
@@ -29,8 +29,11 @@ namespace TS_NetCore_Scanner.Engine
                 {
                     foreach (var dependency in targetFramework.Dependencies)
                     {
-                        var projectLibrary = lockFileTargetFramework.Libraries.FirstOrDefault(library => library.Name == dependency.Name);
-                        ReportDependency(projectTarget.dependencies, projectLibrary, lockFileTargetFramework);
+                        if (!MetaPackagesSkipper.MetaPackages.Any(x => x == dependency.Name))
+                        {
+                            var projectLibrary = lockFileTargetFramework.Libraries.FirstOrDefault(library => library.Name == dependency.Name);
+                            ReportDependency(projectTarget.dependencies, projectLibrary, lockFileTargetFramework);
+                        }
                     }
                 }
             }
