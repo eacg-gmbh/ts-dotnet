@@ -11,7 +11,7 @@ namespace TS_NetCore_Scanner.Engine
             "Microsoft.NETCore.App",
             "Microsoft.AspNetCore.App",
             "Microsoft.AspNetCore.All",
-            "Microsoft.NETCore.Portable.Compatibility "
+            "Microsoft.NETCore.Portable.Compatibility"
         };
     }
 }

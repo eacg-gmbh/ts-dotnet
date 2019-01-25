@@ -53,8 +53,19 @@ namespace TS_NetCore_Scanner.ConsoleApp
                     string apiurl = "";
                     trustSourceApiUrl.TryParse(apiurl);
 
+                    string tsUsername = trustSourceUserName.Value();
+                    string tsApiKey = trustSourceApiKey.Value();
+
                     Console.WriteLine("Starting Scanning");
-                    TS_NetCore_Scanner.Engine.Scanner.Initiate(projectPath, trustSourceUserName.Value(), trustSourceApiKey.Value(), apiurl);
+                    Console.WriteLine($"Project Path: {projectPath}");
+                    Console.WriteLine($"TS Username: {tsUsername}");
+                    Console.WriteLine($"TS Api Key: {tsApiKey}");
+
+                    if (!string.IsNullOrEmpty(apiurl))
+                        Console.WriteLine($"TS API Url: {apiurl}");
+
+
+                    TS_NetCore_Scanner.Engine.Scanner.Initiate(projectPath, tsUsername, tsApiKey, apiurl);
                     Console.WriteLine("Scan completed and succefully delivered");
                 }
                 else

@@ -29,11 +29,8 @@ namespace TS_NetCore_Scanner.Engine
                 {
                     foreach (var dependency in targetFramework.Dependencies)
                     {
-                        if (!MetaPackagesSkipper.MetaPackages.Any(x => x == dependency.Name))
-                        {
-                            var projectLibrary = lockFileTargetFramework.Libraries.FirstOrDefault(library => library.Name == dependency.Name);
-                            ReportDependency(projectTarget.dependencies, projectLibrary, lockFileTargetFramework);
-                        }
+                        var projectLibrary = lockFileTargetFramework.Libraries.FirstOrDefault(library => library.Name == dependency.Name);
+                        ReportDependency(projectTarget.dependencies, projectLibrary, lockFileTargetFramework, dependency.AutoReferenced);
                     }
                 }
             }
@@ -41,7 +38,7 @@ namespace TS_NetCore_Scanner.Engine
             return projectTarget;
         }
 
-        private static void ReportDependency(List<Dependency> dependencies, LockFileTargetLibrary projectLibrary, LockFileTarget lockFileTargetFramework)
+        private static void ReportDependency(List<Dependency> dependencies, LockFileTargetLibrary projectLibrary, LockFileTarget lockFileTargetFramework, bool AutoReferenced)
         {
             Dependency targetDependency = new Dependency();
             dependencies.Add(targetDependency);
@@ -56,11 +53,12 @@ namespace TS_NetCore_Scanner.Engine
             //targetDependency.description = projectLibrary.Version.ToFullString();
             //targetDependency.licences.Add(new licence() { name = projectLibrary.Version.ToFullString(), url = "" });
 
-            foreach (var childDependency in projectLibrary.Dependencies)
-            {
-                var childLibrary = lockFileTargetFramework.Libraries.FirstOrDefault(library => library.Name == childDependency.Id);
-                ReportDependency(targetDependency.dependencies, childLibrary, lockFileTargetFramework);
-            }
+            if (!AutoReferenced)
+                foreach (var childDependency in projectLibrary.Dependencies)
+                {
+                    var childLibrary = lockFileTargetFramework.Libraries.FirstOrDefault(library => library.Name == childDependency.Id);
+                    ReportDependency(targetDependency.dependencies, childLibrary, lockFileTargetFramework, false);
+                }
         }
     }
 }
