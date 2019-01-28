@@ -43,7 +43,7 @@ namespace TS_NetCore_Scanner.Engine
             Dependency targetDependency = new Dependency();
             dependencies.Add(targetDependency);
 
-            targetDependency.name = projectLibrary.Name; //targetFramework.FrameworkName.ToString(); // $"{targetFramework.FrameworkName.DotNetFrameworkName} {targetFramework.FrameworkName.Version}";
+            targetDependency.name = projectLibrary.Name;
             targetDependency.key = $"netcore:{projectLibrary.Name}";
             targetDependency.versions.Add(projectLibrary.Version.ToNormalizedString());
 
@@ -57,7 +57,8 @@ namespace TS_NetCore_Scanner.Engine
                 foreach (var childDependency in projectLibrary.Dependencies)
                 {
                     var childLibrary = lockFileTargetFramework.Libraries.FirstOrDefault(library => library.Name == childDependency.Id);
-                    ReportDependency(targetDependency.dependencies, childLibrary, lockFileTargetFramework, false);
+                    bool SystemReferenced = MetaPackagesSkipper.MetaPackages.Any(x => x == childLibrary.Name);
+                    ReportDependency(targetDependency.dependencies, childLibrary, lockFileTargetFramework, SystemReferenced);
                 }
         }
     }
