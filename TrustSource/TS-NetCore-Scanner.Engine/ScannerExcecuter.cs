@@ -10,6 +10,8 @@ namespace TS_NetCore_Scanner.Engine
     {
         internal static Target ProcessDependencies(string solutionName, PackageSpec project)
         {
+            List<string> packageCollection = new List<string>();
+
             Target projectTarget = new Target();
             projectTarget.project = solutionName;
             projectTarget.moduleId = $"netcore:{project.Name}";
@@ -30,7 +32,7 @@ namespace TS_NetCore_Scanner.Engine
                     foreach (var dependency in targetFramework.Dependencies)
                     {
                         var projectLibrary = lockFileTargetFramework.Libraries.FirstOrDefault(library => library.Name == dependency.Name);
-                        ReportDependency(projectTarget.dependencies, projectLibrary, lockFileTargetFramework, dependency.AutoReferenced);
+                        ReportDependency(projectTarget.dependencies, projectLibrary, lockFileTargetFramework, dependency.AutoReferenced, packageCollection);
                     }
                 }
             }
@@ -38,7 +40,7 @@ namespace TS_NetCore_Scanner.Engine
             return projectTarget;
         }
 
-        private static void ReportDependency(List<Dependency> dependencies, LockFileTargetLibrary projectLibrary, LockFileTarget lockFileTargetFramework, bool AutoReferenced)
+        private static void ReportDependency(List<Dependency> dependencies, LockFileTargetLibrary projectLibrary, LockFileTarget lockFileTargetFramework, bool AutoReferenced, List<string> packageCollection)
         {
             Dependency targetDependency = new Dependency();
             dependencies.Add(targetDependency);
@@ -54,12 +56,16 @@ namespace TS_NetCore_Scanner.Engine
             //targetDependency.licences.Add(new licence() { name = projectLibrary.Version.ToFullString(), url = "" });
 
             if (!AutoReferenced)
+            {
+                packageCollection.Add(projectLibrary.Name);
+
                 foreach (var childDependency in projectLibrary.Dependencies)
                 {
                     var childLibrary = lockFileTargetFramework.Libraries.FirstOrDefault(library => library.Name == childDependency.Id);
-                    bool SystemReferenced = MetaPackagesSkipper.MetaPackages.Any(x => x == childLibrary.Name);
-                    ReportDependency(targetDependency.dependencies, childLibrary, lockFileTargetFramework, SystemReferenced);
+                    bool SystemReferenced = MetaPackagesSkipper.MetaPackages.Any(x => x == childLibrary.Name) || packageCollection.Any(x => x == childLibrary.Name);
+                    ReportDependency(targetDependency.dependencies, childLibrary, lockFileTargetFramework, SystemReferenced, packageCollection);
                 }
+            }
         }
     }
 }

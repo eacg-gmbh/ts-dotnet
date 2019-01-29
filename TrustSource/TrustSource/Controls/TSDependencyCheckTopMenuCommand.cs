@@ -161,12 +161,6 @@ namespace TrustSource
 
                 Scanner.Initiate(projectPath, tsSettings.Username, tsSettings.ApiKey);
 
-
-                // Get the status bar text.   
-                string text;
-                statusBar.GetText(out text);
-                System.Windows.Forms.MessageBox.Show(text);
-
                 statusBar.SetText("TrustSource Scan is completed");
                 statusBar.FreezeOutput(1);
                 statusBar.Clear();

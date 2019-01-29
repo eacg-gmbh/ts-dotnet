@@ -10,7 +10,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="NuGet.ProjectModel" Version="4.9.2" />
+    <PackageReference Include="NuGet.ProjectModel" Version="4.9.3" />
   </ItemGroup>
 
 </Project>
