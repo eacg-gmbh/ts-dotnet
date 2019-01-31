@@ -161,6 +161,8 @@ namespace TrustSource
 
                 Scanner.Initiate(projectPath, tsSettings.Username, tsSettings.ApiKey);
 
+                statusBar.FreezeOutput(0);
+                statusBar.Clear();
                 statusBar.SetText("TrustSource Scan is completed");
                 statusBar.FreezeOutput(1);
                 statusBar.Clear();
