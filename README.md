@@ -3,7 +3,7 @@
 This repo contains several plugins. Two for Visual Studio, one for Teamfoundation Server/Services. Two have been designed to support .NET-framework, one has been designed to support .Net-Core.
 
 ## .Net-Core & Visual Studio Integration
-Go to [/TrustSource|https://github.com/eacg-gmbh/ecs-nuget/tree/master/TrustSource] folder and see the ReadMe there.
+Go to [/TrustSource](https://github.com/eacg-gmbh/ecs-nuget/tree/master/TrustSource) folder and see the ReadMe there.
 
 ## .Net-Framework & TFS Integration
 
