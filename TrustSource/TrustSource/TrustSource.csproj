@@ -79,8 +79,21 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="index.html" />
+    <None Include="Resources\trustsource.ico" />
+    <Content Include="Resources\License.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
     <Content Include="Resources\TrustSourceToolsOptions.ico" />
     <Content Include="Resources\TSDependencyCheckTopMenuCommand.png" />
+    <Content Include="Resources\TS_Nuget_symbol.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
+    <Content Include="Resources\ts_nuget_symbol_Nun_icon.ico">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
     <Content Include="stylesheet.css" />
     <VSCTCompile Include="TrustSourceToolsOptions.vsct">
       <ResourceName>Menus.ctmenu</ResourceName>
