@@ -3,7 +3,9 @@
 This repo contains several plugins. Two for Visual Studio, one for Teamfoundation Server/Services. Two have been designed to support .NET-framework, one has been designed to support .Net-Core.
 
 ## .Net-Core & Visual Studio Integration
-In the [/TrustSource](https://github.com/eacg-gmbh/ecs-nuget/tree/master/TrustSource) folder you will find a commandline tool to manage .Net-Core-Analysis. The Visual Studio Plugin will soon be found in the [Visual Studio Marketplace](https://marketplace.visualstudio.com/items?itemName=TrustSource.vsp4dotnetcore)
+In the [/TrustSource](https://github.com/eacg-gmbh/ecs-nuget/tree/master/TrustSource) folder you will find a commandline tool to manage .Net-Core-Analysis. The Visual Studio Plugin can be found in the [Visual Studio Marketplace](https://marketplace.visualstudio.com/items?itemName=TrustSource.vsp4dotnetcore)
+
+We are currently seeking feedback on the different implementations. Feel free to contact us and let us know about your expereince. Our next step will be to combine the different .Net solutions into one. Feel free to provide us with your suggestions.
 
 ## .Net-Framework & TFS Integration
 
@@ -46,7 +48,7 @@ Provide a folder to secure temporary files, e.g. c:\temp\buildtasks
 
 ## .Net-framework & Visual Studio Integration
 
-tbc.
+As mentioned above, our next step will be to integarte the .Net-Framework also into the Visual studio plugin. We do not yet have a release schedule attached. But based on the existing solutions, it will be done fast. Please contact us, in case you have specific needs or suggestions.
 
 ## Contact & Questions
 
