@@ -46,7 +46,7 @@ Provide a folder to secure temporary files, e.g. c:\temp\buildtasks
     
 9.	Change to TFS and configure your build using the new custom task (should be available)
 
-## .Net-framework & Visual Studio Integration
+## .Net-Framework & Visual Studio Integration
 
 As mentioned above, our next step will be to integarte the .Net-Framework also into the Visual studio plugin. We do not yet have a release schedule attached. But based on the existing solutions, it will be done fast. Please contact us, in case you have specific needs or suggestions.
 
