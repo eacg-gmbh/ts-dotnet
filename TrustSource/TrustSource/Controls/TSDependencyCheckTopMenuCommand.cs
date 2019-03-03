@@ -1,16 +1,12 @@
-﻿using System;
-using System.ComponentModel.Design;
-using System.Globalization;
-using System.Threading;
-using System.Threading.Tasks;
-using EnvDTE;
+﻿using EnvDTE;
 using EnvDTE80;
-using Microsoft;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
+using System;
+using System.ComponentModel.Design;
 using TrustSource.Common;
 using TrustSource.Models;
-using TS_NetCore_Scanner.Engine;
+using TS_NetFramework_Scanner.Engine;
 using Task = System.Threading.Tasks.Task;
 
 namespace TrustSource

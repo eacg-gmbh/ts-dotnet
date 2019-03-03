@@ -13,4 +13,8 @@
     <PackageReference Include="NuGet.ProjectModel" Version="4.9.3" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\TS-NET-Scanner.Common\TS-Net-Scanner.Common.csproj" />
+  </ItemGroup>
+
 </Project>

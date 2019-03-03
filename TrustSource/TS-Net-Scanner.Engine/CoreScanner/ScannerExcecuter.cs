@@ -2,11 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using TS_Net_Scanner.Common;
-using TS_Net_Scanner.Engine;
 
-namespace TS_NetCore_Scanner.Engine
+namespace TS_Net_Scanner.Engine
 {
-    internal class ScannerExcecuter
+    internal class NetCoreScannerExcecuter
     {
         internal static Target ProcessDependencies(string solutionName, PackageSpec project)
         {

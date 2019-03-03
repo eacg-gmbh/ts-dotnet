@@ -1,11 +1,10 @@
 ﻿using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
-using System.Text;
+using TS_NetFramework_Scanner.Common;
 
-namespace TS_NetCore_Scanner.Engine
+namespace TS_NetFramework_Scanner.Engine
 {
-    internal class TargetSerializer
+    public class TargetSerializer
     {
         public static string ConvertToJson(Target target)
         {

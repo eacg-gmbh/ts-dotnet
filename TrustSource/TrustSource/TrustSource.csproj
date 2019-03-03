@@ -239,9 +239,9 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\TS-NetCore-Scanner.Engine\TS-NetCore-Scanner.Engine.csproj">
-      <Project>{9188de96-e1c2-4fb8-a376-8a1fcf3f9b77}</Project>
-      <Name>TS-NetCore-Scanner.Engine</Name>
+    <ProjectReference Include="..\TS-NetFramework-Scanner.Engine\TS-NetFramework-Scanner.Engine.csproj">
+      <Project>{0365666b-acb5-43b1-b1c2-b8a29df5e650}</Project>
+      <Name>TS-NetFramework-Scanner.Engine</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

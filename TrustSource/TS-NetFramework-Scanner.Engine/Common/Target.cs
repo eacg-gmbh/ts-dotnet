@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TS_NetCore_Scanner.Engine
+namespace TS_NetFramework_Scanner.Common
 {
-    internal class Target
+    public class Target
     {
         public string project { get; set; }
 
@@ -19,7 +19,7 @@ namespace TS_NetCore_Scanner.Engine
         public List<Dependency> dependencies { get; set; } = new List<Dependency>();
     }
 
-    internal class Dependency
+    public class Dependency
     {
         public string name { get; set; }
 
@@ -42,7 +42,7 @@ namespace TS_NetCore_Scanner.Engine
         public List<Dependency> dependencies { get; set; } = new List<Dependency>();
     }
 
-    internal class licence
+    public class license
     {
         public string name { get; set; }
 

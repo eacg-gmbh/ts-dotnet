@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
+﻿using System.IO;
 using System.Linq;
-using System.Text;
 
-namespace TS_NetCore_Scanner.Engine
+namespace TS_Net_Scanner.Engine
 {
 
     public static class VisualStudioProvider
@@ -23,7 +20,6 @@ namespace TS_NetCore_Scanner.Engine
 
             return "";
         }
-
 
         public static DirectoryInfo TryGetSolutionDirectoryInfo(string currentPath)
         {

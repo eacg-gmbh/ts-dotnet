@@ -1,12 +1,11 @@
 ﻿using NuGet.ProjectModel;
 using System.Collections.Generic;
 using System.Linq;
-using TS_Net_Scanner.Common;
-using TS_Net_Scanner.Engine;
+using TS_NetFramework_Scanner.Common;
 
-namespace TS_NetCore_Scanner.Engine
+namespace TS_NetFramework_Scanner.Engine
 {
-    internal class ScannerExcecuter
+    internal class NetCoreScannerExcecuter
     {
         internal static Target ProcessDependencies(string solutionName, PackageSpec project)
         {

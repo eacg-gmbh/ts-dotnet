@@ -1,10 +1,8 @@
 ﻿using NuGet.ProjectModel;
-using System;
-using System.Linq;
 using TS_Net_Scanner.Common;
-using TS_Net_Scanner.Engine;
+using TS_Net_Scanner.Engine.NetScanner;
 
-namespace TS_NetCore_Scanner.Engine
+namespace TS_Net_Scanner.Engine
 {
     public class Scanner
     {
@@ -14,16 +12,20 @@ namespace TS_NetCore_Scanner.Engine
             var dependencyGraph = dependencyGraphService.GenerateDependencyGraph(projectPath);
             string solutionName = VisualStudioProvider.GetSolutionName(projectPath);
 
-            if (!dependencyGraph.Projects.Any(p => p.RestoreMetadata.ProjectStyle == ProjectStyle.PackageReference))
+            foreach (var project in dependencyGraph.Projects)
             {
-                throw new Exception($"Unable to process the solution {projectPath}. Are you sure this is a valid .NET Core or .NET Standard project type?");
-            }
+                Target projectTarget = null;
 
-            foreach (var project in dependencyGraph.Projects.Where(p => p.RestoreMetadata.ProjectStyle == ProjectStyle.PackageReference))
-            {
-                // Process Project Dependencies
-                Target projectTarget = ScannerExcecuter.ProcessDependencies(solutionName, project);
-
+                if (project.RestoreMetadata.ProjectStyle == ProjectStyle.PackageReference)
+                {
+                    // Process Project Dependencies
+                    projectTarget = NetCoreScannerExcecuter.ProcessDependencies(solutionName, project);
+                }
+                else
+                {
+                    projectTarget = NetFrameWorkScannerExecutor.ProcessDependencies(solutionName, project);
+                }
+                
                 // Convert Target into Json string
                 string targetJson = TargetSerializer.ConvertToJson(projectTarget);
 
