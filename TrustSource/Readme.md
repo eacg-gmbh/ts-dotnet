@@ -1,8 +1,8 @@
-<h1>TrustSource .NET scanners</h1>
-This repository contains TrustSource .NET scanners. There is a Visual Studio plugin supporting .Net-Framework and .Net-core applications which can be used from within Visual Studio for Windows, a command line tool capable to operate on all .Net-Core platforms and a TFS-Integration (2015 and 2017).   
+<h1>TrustSource .NET Core console app and plugin for VS Windows</h1>
+This repository contains TrustSource .NET Core plugin project for Visual Studio for Windows, and .NET Core console application for Cross Platform operations. 
 
 <h2>TS-NetCore-Scanner Console application</h2>
-To make use of the Console application, please follow these steps (available on all .Net-core platforms):
+To make use of the Console application, please follow these steps:
 
 Install .NET Core in desired operation system. Then locate working directory and run help command. This will browse list of options you could supply to this console application.
 <br /><br /><b>Note: You can use current directory for scanning path, or provide path explicitely using [ -p | --path option is optional ]</b>
