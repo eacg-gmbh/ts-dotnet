@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using System.Configuration;
 
 namespace TS_NetFramework_Scanner.ConsoleApp
 {
@@ -34,12 +35,24 @@ namespace TS_NetFramework_Scanner.ConsoleApp
             var trustSourceApiKey = app.Option("-key|--ApiKey <optionvalue>", "TrustSource Api Key", CommandOptionType.SingleValue);
             var trustSourceApiUrl = app.Option("-url|--ApiUrl <optionvalue>", "TrustSource Api Url", CommandOptionType.SingleValue);
 
+            string tsUsername, tsApiKey;
+            if (trustSourceUserName.HasValue() && trustSourceApiKey.HasValue())
+            {
+                tsUsername = trustSourceUserName.Value();
+                tsApiKey = trustSourceApiKey.Value();
+            }
+            else
+            {
+                tsUsername = ConfigurationManager.AppSettings.Get("TS-Username");
+                tsApiKey = ConfigurationManager.AppSettings.Get("TS-ApiKey");
+            }
+
             // When no commands are specified, this block will execute.
             // This is the main "command"
 
             app.OnExecute(() =>
             {
-                if (trustSourceUserName.HasValue() && trustSourceApiKey.HasValue())
+                if (!string.IsNullOrEmpty(tsUsername) && !string.IsNullOrEmpty(tsApiKey))
                 {
                     string projectPath;
 
@@ -49,14 +62,26 @@ namespace TS_NetFramework_Scanner.ConsoleApp
                     }
                     else
                     {
-                        projectPath = Environment.CurrentDirectory;
+                        var configProjectPath = ConfigurationManager.AppSettings.Get("ProjectPath");
+
+                        if (string.IsNullOrEmpty(configProjectPath))
+                            projectPath = Environment.CurrentDirectory;
+                        else
+                            projectPath = configProjectPath;
                     }
 
                     string apiurl = "";
-                    trustSourceApiUrl.TryParse(apiurl);
+                    if (trustSourceApiUrl.HasValue())
+                    {
+                        apiurl = trustSourceApiUrl.Value();
+                    }
+                    else
+                    {
+                        var configTsApiUrl = ConfigurationManager.AppSettings.Get("TS-ApiUrl");
 
-                    string tsUsername = trustSourceUserName.Value();
-                    string tsApiKey = trustSourceApiKey.Value();
+                        if (!string.IsNullOrEmpty(configTsApiUrl))
+                            apiurl = configTsApiUrl;
+                    }
 
                     Console.WriteLine("Starting Scanning");
                     Console.WriteLine($"Project Path: {projectPath}");
@@ -78,7 +103,6 @@ namespace TS_NetFramework_Scanner.ConsoleApp
 
                 return 0;
             });
-
 
             try
             {

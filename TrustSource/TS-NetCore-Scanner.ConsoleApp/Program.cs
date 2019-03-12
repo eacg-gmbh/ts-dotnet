@@ -1,6 +1,8 @@
 ﻿using Microsoft.Extensions.CommandLineUtils;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.IO;
 using System.Reflection;
 
@@ -10,6 +12,15 @@ namespace TS_NetCore_Scanner.ConsoleApp
     {
         static void Main(string[] args)
         {
+            var builder = new ConfigurationBuilder()
+                //.SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
+
+            IConfigurationRoot configuration = builder.Build();
+
+            ProjectConfig projectConfig = new ProjectConfig();
+            configuration.Bind(projectConfig);
+
             var app = new CommandLineApplication();
 
             // the help text line "Usage: TS-NetCore-Scanne" uses this
@@ -32,12 +43,24 @@ namespace TS_NetCore_Scanner.ConsoleApp
             var trustSourceApiKey = app.Option("-key|--ApiKey <optionvalue>", "TrustSource Api Key", CommandOptionType.SingleValue);
             var trustSourceApiUrl = app.Option("-url|--ApiUrl <optionvalue>", "TrustSource Api Url", CommandOptionType.SingleValue);
 
+            string tsUsername, tsApiKey;
+            if (trustSourceUserName.HasValue() && trustSourceApiKey.HasValue())
+            {
+                tsUsername = trustSourceUserName.Value();
+                tsApiKey = trustSourceApiKey.Value();
+            }
+            else
+            {
+                tsUsername = projectConfig.trustSourceAPI.Username;
+                tsApiKey = projectConfig.trustSourceAPI.ApiKey;
+            }
+
             // When no commands are specified, this block will execute.
             // This is the main "command"
 
             app.OnExecute(() =>
             {
-                if (trustSourceUserName.HasValue() && trustSourceApiKey.HasValue())
+                if (!string.IsNullOrEmpty(tsUsername) && !string.IsNullOrEmpty(tsApiKey))
                 {
                     string projectPath;
 
@@ -47,14 +70,26 @@ namespace TS_NetCore_Scanner.ConsoleApp
                     }
                     else
                     {
-                        projectPath = Environment.CurrentDirectory;
+                        var configProjectPath = projectConfig.ProjectPath;
+
+                        if (string.IsNullOrEmpty(configProjectPath))
+                            projectPath = Environment.CurrentDirectory;
+                        else
+                            projectPath = configProjectPath;
                     }
 
                     string apiurl = "";
-                    trustSourceApiUrl.TryParse(apiurl);
+                    if (trustSourceApiUrl.HasValue())
+                    {
+                        apiurl = trustSourceApiUrl.Value();
+                    }
+                    else
+                    {
+                        var configTsApiUrl = projectConfig.trustSourceAPI.ApiUrl;
 
-                    string tsUsername = trustSourceUserName.Value();
-                    string tsApiKey = trustSourceApiKey.Value();
+                        if (!string.IsNullOrEmpty(configTsApiUrl))
+                            apiurl = configTsApiUrl;
+                    }
 
                     Console.WriteLine("Starting Scanning");
                     Console.WriteLine($"Project Path: {projectPath}");
@@ -63,7 +98,6 @@ namespace TS_NetCore_Scanner.ConsoleApp
 
                     if (!string.IsNullOrEmpty(apiurl))
                         Console.WriteLine($"TS API Url: {apiurl}");
-
 
                     TS_NetCore_Scanner.Engine.Scanner.Initiate(projectPath, tsUsername, tsApiKey, apiurl);
                     Console.WriteLine("Scan completed and succefully delivered");
