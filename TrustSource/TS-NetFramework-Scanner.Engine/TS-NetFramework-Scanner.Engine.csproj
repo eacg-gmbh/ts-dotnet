@@ -93,7 +93,6 @@
   <ItemGroup>
     <Compile Include="Common\Target.cs" />
     <Compile Include="Common\TargetSerializer.cs" />
-    <Compile Include="Common\TrustSourceProvider.cs" />
     <Compile Include="Common\VisualStudioProvider.cs" />
     <Compile Include="CoreScanner\DependencyGraphService.cs" />
     <Compile Include="CoreScanner\DotNetRunner.cs" />
@@ -108,6 +107,12 @@
     <None Include="app.config" />
     <None Include="packages.config" />
     <None Include="TS-NetFramrwork-Scanner.Engine.snk" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\TS-NET-Scanner.Common\TS-Net-Scanner.Common.csproj">
+      <Project>{8CFF1932-55AD-492B-8EF3-6C4A7AA41484}</Project>
+      <Name>TS-Net-Scanner.Common</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

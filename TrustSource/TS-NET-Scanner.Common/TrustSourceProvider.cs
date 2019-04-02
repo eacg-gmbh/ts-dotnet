@@ -17,6 +17,11 @@ namespace TS_Net_Scanner.Engine
                     TrustSourceApiUrl = trustSourceApiUrl;
                 }
 
+                if (string.IsNullOrEmpty(TrustSourceApiUrl))
+                {
+                    throw new Exception("There is some problem with TrustSourceApiUrl");
+                }
+
                 var client = new WebClient();
 
                 client.Headers.Add("Content-Type", "application/json");
@@ -30,14 +35,6 @@ namespace TS_Net_Scanner.Engine
             }
             catch (WebException wex)
             {
-                string errorMessage;
-
-                using (var stream = wex.Response.GetResponseStream())
-                using (var reader = new StreamReader(stream))
-                {
-                    errorMessage = reader.ReadToEnd();
-                }
-
                 throw wex;
             }
             catch (Exception ex)
