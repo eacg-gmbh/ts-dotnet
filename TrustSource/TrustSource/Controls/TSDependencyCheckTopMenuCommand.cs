@@ -1,9 +1,12 @@
 ﻿using EnvDTE;
 using EnvDTE80;
+using log4net;
+using log4net.Config;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using System;
 using System.ComponentModel.Design;
+using System.IO;
 using TrustSource.Common;
 using TrustSource.Models;
 using TS_NetFramework_Scanner.Engine;
@@ -31,6 +34,8 @@ namespace TrustSource
         /// </summary>
         private readonly AsyncPackage package;
 
+        private ILog logger;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="TSDependencyCheckTopMenuCommand"/> class.
         /// Adds our command handlers for menu (commands must exist in the command table file)
@@ -39,6 +44,9 @@ namespace TrustSource
         /// <param name="commandService">Command service to add command to, not null.</param>
         private TSDependencyCheckTopMenuCommand(AsyncPackage package, OleMenuCommandService commandService)
         {
+            InitLog4Net();
+            logger = LogManager.GetLogger(typeof(TSDependencyCheckTopMenuCommand));
+
             this.package = package ?? throw new ArgumentNullException(nameof(package));
             commandService = commandService ?? throw new ArgumentNullException(nameof(commandService));
 
@@ -93,6 +101,8 @@ namespace TrustSource
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
 
             string title = "TrustSource Scanner";
+            logger.Debug($"TrustSource scanner Initiated");
+
 
             TrustSourceSettings tsSettings = ((TrustSourceToolsOptions)package).TrustSourceApiSettings;
             bool IsApiConfigured = !(tsSettings == null || string.IsNullOrEmpty(tsSettings.ApiKey) || string.IsNullOrEmpty(tsSettings.Username));  
@@ -100,6 +110,7 @@ namespace TrustSource
             if(!IsApiConfigured)
             {
                 string message = "TrustSource Api credentials are not avialable. Please go to Tools preferences and set TrustSource credentails.";
+                logger.Debug(message);
 
                 VsShellUtilities.ShowMessageBox(
                     this.package,
@@ -111,12 +122,13 @@ namespace TrustSource
 
                 return;
             }
-
+            
             DTE dte = (DTE)await ServiceProvider.GetServiceAsync(typeof(DTE));
 
             if (dte != null && !dte.Application.Solution.IsOpen)
             {
                 string message = "There is no solution open. Please first open a solution and try again.";
+                logger.Debug(message);
 
                 VsShellUtilities.ShowMessageBox(
                     this.package,
@@ -155,6 +167,11 @@ namespace TrustSource
                 var activeProject = Helper.GetActiveProject(dte);
                 string projectPath = activeProject.FullName;
 
+                logger.Debug($"TrustSource Username: {tsSettings.Username}");
+                logger.Debug($"TrustSource Api Key: {tsSettings.ApiKey}");
+                logger.Debug($"Project Path: {projectPath}");
+
+                logger.Debug($"TrustSource scanner started process");
                 Scanner.Initiate(projectPath, tsSettings.Username, tsSettings.ApiKey);
 
                 statusBar.FreezeOutput(0);
@@ -163,10 +180,16 @@ namespace TrustSource
                 statusBar.FreezeOutput(1);
                 statusBar.Clear();
 
+                logger.Debug($"Scan completed successfully.");
                 System.Windows.Forms.MessageBox.Show("TrustSource scan is completed");
             }
             catch (Exception ex)
             {
+                logger.Debug($"Exception - Error message: {ex.Message}");
+                logger.Debug($"Exception - Stack Trace: {ex.StackTrace}");
+
+                logger.Error($"Scan failed.");
+
                 // Show a message box to prove we were here
                 VsShellUtilities.ShowMessageBox(
                     this.package,
@@ -182,6 +205,12 @@ namespace TrustSource
 
                 return;
             }
+        }
+
+        private void InitLog4Net()
+        {
+            var logCfg = new FileInfo(@"C:\Logs\logging.config");
+            XmlConfigurator.Configure(logCfg);
         }
     }
 }
