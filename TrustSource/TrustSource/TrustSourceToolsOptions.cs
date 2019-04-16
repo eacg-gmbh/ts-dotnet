@@ -85,6 +85,7 @@ namespace TrustSource
             // Do any initialization that requires the UI thread after switching to the UI thread.
             await this.JoinableTaskFactory.SwitchToMainThreadAsync(cancellationToken);
             await TSDependencyCheckTopMenuCommand.InitializeAsync(this);
+            await TrustSource.Controls.TsComponentCheckContextCommand.InitializeAsync(this);
         }
 
         #endregion

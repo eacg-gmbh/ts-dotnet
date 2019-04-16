@@ -55,6 +55,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Common\Helper.cs" />
+    <Compile Include="Controls\TsComponentCheckContextCommand.cs" />
     <Compile Include="Models\TrustSourceSettings.cs" />
     <Compile Include="Controls\TrustSourceOptionPage.cs">
       <SubType>Component</SubType>
@@ -82,6 +83,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Resources\TsComponentCheckContextCommand.png" />
     <Content Include="index.html" />
     <None Include="Resources\trustsource.ico" />
     <Content Include="Resources\License.txt">

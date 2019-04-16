@@ -48,7 +48,10 @@
     <Groups>
       <Group guid="guidTrustSourceToolsOptionsCmdSet" id="TopLevelMenu" priority="0x0600">
         <!--<Parent guid="guidSHLMainMenu" id="IDM_VS_MENU_TOOLS"/>-->
-        <Parent guid="guidTrustSourceToolsOptionsCmdSet" id="TopLevelMenu"/>
+        <Parent guid="guidTrustSourceToolsOptionsCmdSet" id="TopLevelMenu" />
+      </Group>
+      <Group guid="guidTrustSourceToolsOptionsCmdSet1" id="MyMenuGroup" priority="0x0600">
+        <Parent guid="VsReferenceContextMenuCommandSet" id="VsReferenceContextMenu" />
       </Group>
     </Groups>
 
@@ -69,6 +72,13 @@
           <ButtonText>Execute Scan</ButtonText>
         </Strings>
       </Button>
+      <Button guid="guidTrustSourceToolsOptionsCmdSet1" id="cmdidTsComponentCheckContextCommand" priority="0x0100" type="Button">
+        <Parent guid="guidTrustSourceToolsOptionsCmdSet1" id="MyMenuGroup" />
+        <Icon guid="guidImages1" id="bmpPic1" />
+        <Strings>
+          <ButtonText>TS Component Check</ButtonText>
+        </Strings>
+      </Button>
     </Buttons>
 
     <!--The bitmaps section is used to define the bitmaps that are used for the commands.-->
@@ -78,11 +88,16 @@
             bitmap strip containing the bitmaps and then there are the numeric ids of the elements used
             inside a button definition. An important aspect of this declaration is that the element id
             must be the actual index (1-based) of the bitmap inside the bitmap strip. -->
-      <Bitmap guid="guidImages" href="Resources\TSDependencyCheckTopMenuCommand.png" usedList="bmpPic1, bmpPic2, bmpPicSearch, bmpPicX, bmpPicArrows, bmpPicStrikethrough"/>
+      <Bitmap guid="guidImages" href="Resources\TSDependencyCheckTopMenuCommand.png" usedList="bmpPic1, bmpPic2, bmpPicSearch, bmpPicX, bmpPicArrows, bmpPicStrikethrough" />
+      <Bitmap guid="guidImages1" href="Resources\TsComponentCheckContextCommand.png" usedList="bmpPic1, bmpPic2, bmpPicSearch, bmpPicX, bmpPicArrows, bmpPicStrikethrough" />
     </Bitmaps>
   </Commands>
 
   <Symbols>
+    <GuidSymbol name="VsReferenceContextMenuCommandSet" value="{D309F791-903F-11D0-9EFC-00A0C911004F}">
+      <IDSymbol name="VsReferenceContextMenu" value="0x451"/>
+    </GuidSymbol>
+    
     <!-- This is the package guid. -->
     <GuidSymbol name="guidTrustSourceToolsOptions" value="{ced5ac3e-ae57-4716-b350-31c37c60b8b7}" />
 
@@ -91,10 +106,24 @@
       <IDSymbol name="TopLevelMenu" value="0x1020" />
       <IDSymbol name="TSDependencyCheckTopMenuCommandId" value="0x0100" />
 
-      <IDSymbol name="TopLevelMenu" value="0x1021"/>
+      <IDSymbol name="TopLevelMenu" value="0x1021" />
     </GuidSymbol>
 
-    <GuidSymbol name="guidImages" value="{5862b645-4602-4ef7-8e66-f22280c234da}" >
+    <GuidSymbol name="guidImages" value="{5862b645-4602-4ef7-8e66-f22280c234da}">
+      <IDSymbol name="bmpPic1" value="1" />
+      <IDSymbol name="bmpPic2" value="2" />
+      <IDSymbol name="bmpPicSearch" value="3" />
+      <IDSymbol name="bmpPicX" value="4" />
+      <IDSymbol name="bmpPicArrows" value="5" />
+      <IDSymbol name="bmpPicStrikethrough" value="6" />
+    </GuidSymbol>
+  
+    <GuidSymbol value="{fc41974e-8885-4b13-b3db-d055595f6821}" name="guidTrustSourceToolsOptionsCmdSet1">
+      <IDSymbol value="4128" name="MyMenuGroup" />
+      <IDSymbol value="256" name="cmdidTsComponentCheckContextCommand" />
+    </GuidSymbol>
+  
+    <GuidSymbol value="{dea26f9a-36e4-4d1a-a1e0-6fcc7a50232c}" name="guidImages1">
       <IDSymbol name="bmpPic1" value="1" />
       <IDSymbol name="bmpPic2" value="2" />
       <IDSymbol name="bmpPicSearch" value="3" />
