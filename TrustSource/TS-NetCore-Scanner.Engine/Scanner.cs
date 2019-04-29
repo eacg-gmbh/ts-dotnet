@@ -8,7 +8,7 @@ namespace TS_NetCore_Scanner.Engine
 {
     public class Scanner
     {
-        public static bool Initiate(string projectPath, string trustSourceUserName, string trustSourceApiKey, string trustSourceApiUrl = "")
+        public static bool Initiate(string projectPath, string trustSourceUserName, string trustSourceApiKey, string trustSourceApiUrl = "", string branch = "", string tag = "")
         {
             var dependencyGraphService = new DependencyGraphService();
             var dependencyGraph = dependencyGraphService.GenerateDependencyGraph(projectPath);
@@ -23,6 +23,12 @@ namespace TS_NetCore_Scanner.Engine
             {
                 // Process Project Dependencies
                 Target projectTarget = ScannerExcecuter.ProcessDependencies(solutionName, project);
+
+                if (!string.IsNullOrEmpty(branch))
+                    projectTarget.branch = branch;
+
+                if (!string.IsNullOrEmpty(tag))
+                    projectTarget.tag = tag;
 
                 // Convert Target into Json string
                 string targetJson = TargetSerializer.ConvertToJson(projectTarget);

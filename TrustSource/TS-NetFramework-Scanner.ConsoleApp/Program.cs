@@ -34,8 +34,10 @@ namespace TS_NetFramework_Scanner.ConsoleApp
             var trustSourceUserName = app.Option("-user|--username <optionvalue>", "TrustSource Username", CommandOptionType.SingleValue);
             var trustSourceApiKey = app.Option("-key|--ApiKey <optionvalue>", "TrustSource Api Key", CommandOptionType.SingleValue);
             var trustSourceApiUrl = app.Option("-url|--ApiUrl <optionvalue>", "TrustSource Api Url", CommandOptionType.SingleValue);
+            var trustSourceBranch = app.Option("-b|--branch <optionvalue>", "TrustSource Branch", CommandOptionType.SingleValue);
+            var trustSourceTag = app.Option("-t|--tag <optionvalue>", "TrustSource Tag", CommandOptionType.SingleValue);
 
-            string tsUsername, tsApiKey;
+            string tsUsername, tsApiKey, tsBranch, tsTag;
             if (trustSourceUserName.HasValue() && trustSourceApiKey.HasValue())
             {
                 tsUsername = trustSourceUserName.Value();
@@ -46,6 +48,9 @@ namespace TS_NetFramework_Scanner.ConsoleApp
                 tsUsername = ConfigurationManager.AppSettings.Get("TS-Username");
                 tsApiKey = ConfigurationManager.AppSettings.Get("TS-ApiKey");
             }
+
+            tsBranch = trustSourceBranch.HasValue() ? trustSourceBranch.Value() : projectConfig.Branch;
+            tsTag = trustSourceTag.HasValue() ? trustSourceTag.Value() : projectConfig.Tag;
 
             // When no commands are specified, this block will execute.
             // This is the main "command"
@@ -91,7 +96,7 @@ namespace TS_NetFramework_Scanner.ConsoleApp
                     if (!string.IsNullOrEmpty(apiurl))
                         Console.WriteLine($"TS API Url: {apiurl}");
 
-                    TS_NetFramework_Scanner.Engine.Scanner.Initiate(projectPath, tsUsername, tsApiKey, apiurl);
+                    TS_NetFramework_Scanner.Engine.Scanner.Initiate(projectPath, tsUsername, tsApiKey, apiurl, tsBranch, tsTag);
                     Console.WriteLine("Scan completed and succefully delivered");
                 }
                 else

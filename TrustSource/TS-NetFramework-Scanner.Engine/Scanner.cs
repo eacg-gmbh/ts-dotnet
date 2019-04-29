@@ -6,7 +6,7 @@ namespace TS_NetFramework_Scanner.Engine
 {
     public class Scanner
     {
-        public static bool Initiate(string projectPath, string trustSourceUserName, string trustSourceApiKey, string trustSourceApiUrl = "")
+        public static bool Initiate(string projectPath, string trustSourceUserName, string trustSourceApiKey, string trustSourceApiUrl = "", string tsBranch = "", string tsTag = "")
         {
             var dependencyGraphService = new DependencyGraphService();
             var dependencyGraph = dependencyGraphService.GenerateDependencyGraph(projectPath);
@@ -25,7 +25,10 @@ namespace TS_NetFramework_Scanner.Engine
                 {
                     projectTarget = NetFrameWorkScannerExecutor.ProcessDependencies(solutionName, project);
                 }
-                
+
+                projectTarget.branch = tsBranch;
+                projectTarget.tag = tsTag;
+
                 // Convert Target into Json string
                 string targetJson = TargetSerializer.ConvertToJson(projectTarget);
 

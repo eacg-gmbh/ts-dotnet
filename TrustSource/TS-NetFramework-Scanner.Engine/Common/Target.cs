@@ -16,6 +16,10 @@ namespace TS_NetFramework_Scanner.Common
 
         public string release { get; set; }
 
+        public string branch { get; set; }
+
+        public string tag { get; set; }
+
         public List<Dependency> dependencies { get; set; } = new List<Dependency>();
     }
 

@@ -10,6 +10,10 @@ namespace TS_NetCore_Scanner.ConsoleApp
 
         public string ProjectPath { get; set; }
 
+        public string Branch { get; set; }
+
+        public string Tag { get; set; }
+
         public TrustSourceAPI trustSourceAPI { get; set; }
     }
 

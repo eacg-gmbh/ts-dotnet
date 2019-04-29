@@ -42,8 +42,10 @@ namespace TS_NetCore_Scanner.ConsoleApp
             var trustSourceUserName = app.Option("-user|--username <optionvalue>", "TrustSource Username", CommandOptionType.SingleValue);
             var trustSourceApiKey = app.Option("-key|--ApiKey <optionvalue>", "TrustSource Api Key", CommandOptionType.SingleValue);
             var trustSourceApiUrl = app.Option("-url|--ApiUrl <optionvalue>", "TrustSource Api Url", CommandOptionType.SingleValue);
+            var trustSourceBranch = app.Option("-b|--branch <optionvalue>", "TrustSource Branch", CommandOptionType.SingleValue);
+            var trustSourceTag = app.Option("-t|--tag <optionvalue>", "TrustSource Tag", CommandOptionType.SingleValue);
 
-            string tsUsername, tsApiKey;
+            string tsUsername, tsApiKey, tsBranch, tsTag;
             if (trustSourceUserName.HasValue() && trustSourceApiKey.HasValue())
             {
                 tsUsername = trustSourceUserName.Value();
@@ -54,6 +56,9 @@ namespace TS_NetCore_Scanner.ConsoleApp
                 tsUsername = projectConfig.trustSourceAPI.Username;
                 tsApiKey = projectConfig.trustSourceAPI.ApiKey;
             }
+
+            tsBranch = trustSourceBranch.HasValue() ? trustSourceBranch.Value() : projectConfig.Branch;
+            tsTag = trustSourceTag.HasValue() ? trustSourceTag.Value() : projectConfig.Tag;
 
             // When no commands are specified, this block will execute.
             // This is the main "command"
@@ -96,10 +101,16 @@ namespace TS_NetCore_Scanner.ConsoleApp
                     Console.WriteLine($"TS Username: {tsUsername}");
                     Console.WriteLine($"TS Api Key: {tsApiKey}");
 
+                    if (!string.IsNullOrEmpty(tsBranch))
+                        Console.WriteLine($"TS Branch: {tsBranch}");
+
+                    if (!string.IsNullOrEmpty(tsTag))
+                        Console.WriteLine($"TS Tag: {tsTag}");
+
                     if (!string.IsNullOrEmpty(apiurl))
                         Console.WriteLine($"TS API Url: {apiurl}");
 
-                    TS_NetCore_Scanner.Engine.Scanner.Initiate(projectPath, tsUsername, tsApiKey, apiurl);
+                    TS_NetCore_Scanner.Engine.Scanner.Initiate(projectPath, tsUsername, tsApiKey, apiurl, tsBranch, tsTag);
                     Console.WriteLine("Scan completed and succefully delivered");
                 }
                 else
