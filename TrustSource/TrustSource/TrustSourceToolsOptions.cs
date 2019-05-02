@@ -66,7 +66,7 @@ namespace TrustSource
             get
             {
                 TrustSourceOptionPage page = (TrustSourceOptionPage)GetDialogPage(typeof(TrustSourceOptionPage));
-                TrustSourceSettings settings = new TrustSourceSettings() { ApiKey = page.ApiKey, Username = page.Username };
+                TrustSourceSettings settings = new TrustSourceSettings() { ApiKey = page.ApiKey, Username = page.Username, AskOptional = page.AskOptional };
 
                 return settings;
             }

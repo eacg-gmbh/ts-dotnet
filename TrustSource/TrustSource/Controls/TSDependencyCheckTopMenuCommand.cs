@@ -8,6 +8,7 @@ using System;
 using System.ComponentModel.Design;
 using System.IO;
 using TrustSource.Common;
+using TrustSource.Dialogs;
 using TrustSource.Models;
 using TS_NetFramework_Scanner.Engine;
 using Task = System.Threading.Tasks.Task;
@@ -102,7 +103,7 @@ namespace TrustSource
 
             string title = "TrustSource Scanner";
             logger.Debug($"TrustSource scanner Initiated");
-
+            string OptionalBranch = "", OptionalTag = "";
 
             TrustSourceSettings tsSettings = ((TrustSourceToolsOptions)package).TrustSourceApiSettings;
             bool IsApiConfigured = !(tsSettings == null || string.IsNullOrEmpty(tsSettings.ApiKey) || string.IsNullOrEmpty(tsSettings.Username));  
@@ -159,6 +160,21 @@ namespace TrustSource
                 statusBar.FreezeOutput(1);
             }
 
+            if (tsSettings.AskOptional)
+            {
+                string message = "Dialog for optional parameters";
+                logger.Debug(message);
+
+                var optionalParamsWindow = new OptionalParamsWindow();
+                bool? IsProceed = optionalParamsWindow.ShowDialog();
+
+                if (IsProceed.HasValue && IsProceed.Value)
+                {
+                    OptionalBranch = optionalParamsWindow.Branch;
+                    OptionalTag = optionalParamsWindow.TagValue;
+                }
+            }
+
             try
             {
                 SolutionBuild builder = dte.Application.Solution.SolutionBuild;
@@ -170,9 +186,11 @@ namespace TrustSource
                 logger.Debug($"TrustSource Username: {tsSettings.Username}");
                 logger.Debug($"TrustSource Api Key: {tsSettings.ApiKey}");
                 logger.Debug($"Project Path: {projectPath}");
+                logger.Debug($"Branch (optional): {OptionalBranch}");
+                logger.Debug($"Tag (optional): {OptionalTag}");
 
                 logger.Debug($"TrustSource scanner started process");
-                Scanner.Initiate(projectPath, tsSettings.Username, tsSettings.ApiKey);
+                Scanner.Initiate(projectPath, tsSettings.Username, tsSettings.ApiKey, "", OptionalBranch, OptionalTag);
 
                 statusBar.FreezeOutput(0);
                 statusBar.Clear();

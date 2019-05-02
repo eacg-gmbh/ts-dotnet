@@ -11,6 +11,9 @@ namespace TrustSource.Models
     public class TrustSourceSettings
     {
         public string Username { get; set; }
+
         public string ApiKey { get; set; }
+
+        public bool AskOptional { get; set; }
     }
 }

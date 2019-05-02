@@ -49,8 +49,8 @@ namespace TS_NetFramework_Scanner.ConsoleApp
                 tsApiKey = ConfigurationManager.AppSettings.Get("TS-ApiKey");
             }
 
-            tsBranch = trustSourceBranch.HasValue() ? trustSourceBranch.Value() : projectConfig.Branch;
-            tsTag = trustSourceTag.HasValue() ? trustSourceTag.Value() : projectConfig.Tag;
+            tsBranch = trustSourceBranch.HasValue() ? trustSourceBranch.Value() : ConfigurationManager.AppSettings.Get("TS-Branch");
+            tsTag = trustSourceTag.HasValue() ? trustSourceTag.Value() : ConfigurationManager.AppSettings.Get("TS-Tag");
 
             // When no commands are specified, this block will execute.
             // This is the main "command"

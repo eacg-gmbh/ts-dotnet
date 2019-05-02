@@ -23,12 +23,21 @@ namespace TrustSource
         {
             txtTrustSourceUsername.Text = optionsPage.Username;
             txtTrustSourceApiKey.Text = optionsPage.ApiKey;
+            chkAskOptional.Checked = optionsPage.AskOptional;
         }
 
         private void btnSave_MouseClick(object sender, MouseEventArgs e)
         {
             optionsPage.Username = txtTrustSourceUsername.Text;
             optionsPage.ApiKey = txtTrustSourceApiKey.Text;
+            optionsPage.AskOptional = chkAskOptional.Checked;
+        }
+
+        private void btnSave_Click(object sender, EventArgs e)
+        {
+            optionsPage.Username = txtTrustSourceUsername.Text;
+            optionsPage.ApiKey = txtTrustSourceApiKey.Text;
+            optionsPage.AskOptional = chkAskOptional.Checked;
         }
     }
 }

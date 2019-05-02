@@ -34,6 +34,7 @@
             this.label2 = new System.Windows.Forms.Label();
             this.btnSave = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.chkAskOptional = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -77,10 +78,12 @@
             this.btnSave.TabIndex = 5;
             this.btnSave.Text = "Save";
             this.btnSave.UseVisualStyleBackColor = true;
+            this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
             this.btnSave.MouseClick += new System.Windows.Forms.MouseEventHandler(this.btnSave_MouseClick);
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.chkAskOptional);
             this.groupBox1.Controls.Add(this.txtTrustSourceUsername);
             this.groupBox1.Controls.Add(this.label2);
             this.groupBox1.Controls.Add(this.btnSave);
@@ -92,6 +95,16 @@
             this.groupBox1.TabIndex = 6;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "TrustSource Credentials";
+            // 
+            // chkAskOptional
+            // 
+            this.chkAskOptional.AutoSize = true;
+            this.chkAskOptional.Location = new System.Drawing.Point(89, 94);
+            this.chkAskOptional.Name = "chkAskOptional";
+            this.chkAskOptional.Size = new System.Drawing.Size(187, 21);
+            this.chkAskOptional.TabIndex = 6;
+            this.chkAskOptional.Text = "Ask Optional Paramteres";
+            this.chkAskOptional.UseVisualStyleBackColor = true;
             // 
             // TrustSourceOptionsUserControl
             // 
@@ -114,5 +127,6 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Button btnSave;
         private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.CheckBox chkAskOptional;
     }
 }

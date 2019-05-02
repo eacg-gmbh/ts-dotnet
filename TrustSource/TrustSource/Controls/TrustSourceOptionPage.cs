@@ -22,6 +22,8 @@ namespace TrustSource
         private string _username { get; set; }
         private string _apikey { get; set; }
 
+        private bool _askOptional { get; set; }
+
         [Category("TrustSource")]
         [DisplayName("Username")]
         [Description("TrustSource Username")]
@@ -38,6 +40,15 @@ namespace TrustSource
         {
             get { return _apikey; }
             set { _apikey = value; }
+        }
+
+        [Category("TrustSource")]
+        [DisplayName("Ask Optional Parameters")]
+        [Description("TrustSource Ask Optional")]
+        public bool AskOptional
+        {
+            get { return _askOptional; }
+            set { _askOptional = value; }
         }
     }
 }
