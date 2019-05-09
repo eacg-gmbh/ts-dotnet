@@ -26,17 +26,18 @@ namespace TrustSource
             chkAskOptional.Checked = optionsPage.AskOptional;
         }
 
-        private void btnSave_MouseClick(object sender, MouseEventArgs e)
+        private void txtTrustSourceUsername_TextChanged(object sender, EventArgs e)
         {
             optionsPage.Username = txtTrustSourceUsername.Text;
-            optionsPage.ApiKey = txtTrustSourceApiKey.Text;
-            optionsPage.AskOptional = chkAskOptional.Checked;
         }
 
-        private void btnSave_Click(object sender, EventArgs e)
+        private void txtTrustSourceApiKey_TextChanged(object sender, EventArgs e)
         {
-            optionsPage.Username = txtTrustSourceUsername.Text;
             optionsPage.ApiKey = txtTrustSourceApiKey.Text;
+        }
+
+        private void chkAskOptional_CheckedChanged(object sender, EventArgs e)
+        {
             optionsPage.AskOptional = chkAskOptional.Checked;
         }
     }

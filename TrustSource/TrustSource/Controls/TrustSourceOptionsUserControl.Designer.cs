@@ -32,7 +32,6 @@
             this.txtTrustSourceUsername = new System.Windows.Forms.TextBox();
             this.lblTrustSourceUserName = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
-            this.btnSave = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.chkAskOptional = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
@@ -44,6 +43,7 @@
             this.txtTrustSourceApiKey.Name = "txtTrustSourceApiKey";
             this.txtTrustSourceApiKey.Size = new System.Drawing.Size(318, 22);
             this.txtTrustSourceApiKey.TabIndex = 0;
+            this.txtTrustSourceApiKey.TextChanged += new System.EventHandler(this.txtTrustSourceApiKey_TextChanged);
             // 
             // txtTrustSourceUsername
             // 
@@ -51,6 +51,7 @@
             this.txtTrustSourceUsername.Name = "txtTrustSourceUsername";
             this.txtTrustSourceUsername.Size = new System.Drawing.Size(318, 22);
             this.txtTrustSourceUsername.TabIndex = 1;
+            this.txtTrustSourceUsername.TextChanged += new System.EventHandler(this.txtTrustSourceUsername_TextChanged);
             // 
             // lblTrustSourceUserName
             // 
@@ -70,28 +71,16 @@
             this.label2.TabIndex = 3;
             this.label2.Text = "Api Key:";
             // 
-            // btnSave
-            // 
-            this.btnSave.Location = new System.Drawing.Point(294, 86);
-            this.btnSave.Name = "btnSave";
-            this.btnSave.Size = new System.Drawing.Size(113, 35);
-            this.btnSave.TabIndex = 5;
-            this.btnSave.Text = "Save";
-            this.btnSave.UseVisualStyleBackColor = true;
-            this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
-            this.btnSave.MouseClick += new System.Windows.Forms.MouseEventHandler(this.btnSave_MouseClick);
-            // 
             // groupBox1
             // 
             this.groupBox1.Controls.Add(this.chkAskOptional);
             this.groupBox1.Controls.Add(this.txtTrustSourceUsername);
             this.groupBox1.Controls.Add(this.label2);
-            this.groupBox1.Controls.Add(this.btnSave);
             this.groupBox1.Controls.Add(this.lblTrustSourceUserName);
             this.groupBox1.Controls.Add(this.txtTrustSourceApiKey);
             this.groupBox1.Location = new System.Drawing.Point(3, 3);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(413, 127);
+            this.groupBox1.Size = new System.Drawing.Size(413, 169);
             this.groupBox1.TabIndex = 6;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "TrustSource Credentials";
@@ -99,12 +88,13 @@
             // chkAskOptional
             // 
             this.chkAskOptional.AutoSize = true;
-            this.chkAskOptional.Location = new System.Drawing.Point(89, 94);
+            this.chkAskOptional.Location = new System.Drawing.Point(89, 86);
             this.chkAskOptional.Name = "chkAskOptional";
             this.chkAskOptional.Size = new System.Drawing.Size(187, 21);
             this.chkAskOptional.TabIndex = 6;
             this.chkAskOptional.Text = "Ask Optional Paramteres";
             this.chkAskOptional.UseVisualStyleBackColor = true;
+            this.chkAskOptional.CheckedChanged += new System.EventHandler(this.chkAskOptional_CheckedChanged);
             // 
             // TrustSourceOptionsUserControl
             // 
@@ -125,7 +115,6 @@
         private System.Windows.Forms.TextBox txtTrustSourceUsername;
         private System.Windows.Forms.Label lblTrustSourceUserName;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Button btnSave;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.CheckBox chkAskOptional;
     }
