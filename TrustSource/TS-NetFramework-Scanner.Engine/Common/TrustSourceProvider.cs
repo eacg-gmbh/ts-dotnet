@@ -12,6 +12,8 @@ namespace TS_NetFramework_Scanner.Engine
         {
             try
             {
+                // This address is provided to allow Test instances on TrustSource if required.
+                // By default empty string will be coming, so it will maintain its default value.
                 if (!string.IsNullOrEmpty(trustSourceApiUrl))
                 {
                     TrustSourceApiUrl = trustSourceApiUrl;

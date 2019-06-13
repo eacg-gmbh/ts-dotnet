@@ -23,7 +23,7 @@ namespace TS_NetFramework_Scanner.Engine
                 }
                 else
                 {
-                    projectTarget = NetFrameWorkScannerExecutor.ProcessDependencies(solutionName, project);
+                    projectTarget = NetFrameWorkScannerExecutor.ProcessDependencies(solutionName, project, projectPath);
                 }
 
                 projectTarget.branch = tsBranch;

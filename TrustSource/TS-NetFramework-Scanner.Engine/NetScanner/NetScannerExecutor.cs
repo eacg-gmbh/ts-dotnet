@@ -8,9 +8,9 @@ namespace TS_NetFramework_Scanner.Engine.NetScanner
 {
     internal class NetFrameWorkScannerExecutor
     {
-        internal static Target ProcessDependencies(string solutionName, PackageSpec project)
+        internal static Target ProcessDependencies(string solutionName, PackageSpec project, string projectPath)
         {
-            List<string> packageCollection = new List<string>();
+            HashSet<string> packageCollection = new HashSet<string>();
 
             Target projectTarget = new Target();
             projectTarget.project = solutionName;
@@ -33,6 +33,12 @@ namespace TS_NetFramework_Scanner.Engine.NetScanner
             }
 
             var directoryInfo = VisualStudioProvider.TryGetPackagesDirectoryInfo(project.BaseDirectory);
+
+            if (directoryInfo == null)
+            {
+                directoryInfo = VisualStudioProvider.TryGetPackagesDirectoryInfo(projectPath);
+            }
+
             var packageRepository = new NuGet.LocalPackageRepository($@"{directoryInfo.FullName}\packages");
             IQueryable<IPackage> packages = packageRepository.GetPackages();
 
@@ -44,7 +50,7 @@ namespace TS_NetFramework_Scanner.Engine.NetScanner
             return projectTarget;
         }
 
-        private static void ReportDependencyPackage(LocalPackageRepository repository, List<Dependency> dependencies, IPackage package, List<string> packageCollection)
+        private static void ReportDependencyPackage(LocalPackageRepository repository, List<Dependency> dependencies, IPackage package, HashSet<string> packageCollection)
         {
             Dependency targetDependency = new Dependency();
             dependencies.Add(targetDependency);
@@ -61,6 +67,13 @@ namespace TS_NetFramework_Scanner.Engine.NetScanner
             //targetDependency.name = projectLibrary.FrameworkName.ToString();
             //targetDependency.key = $"netframework:{projectLibrary.FrameworkName.ToString()}";
 
+
+            // We let add duplicate package in our Dependency tree, but won't allow its further children.
+            if (packageCollection.Contains(package.GetFullName()))
+            {
+                return;
+            }
+
             packageCollection.Add(package.GetFullName());
 
             foreach (var dependencySet in package.DependencySets)
@@ -68,7 +81,9 @@ namespace TS_NetFramework_Scanner.Engine.NetScanner
                 foreach (var dependency in dependencySet.Dependencies)
                 {
                     IPackage dependentPackage = repository.FindPackage(dependency.Id, dependency.VersionSpec, true, true);
-                    ReportDependencyPackage(repository, targetDependency.dependencies, dependentPackage, packageCollection);
+
+                    if (dependentPackage != null)
+                        ReportDependencyPackage(repository, targetDependency.dependencies, dependentPackage, packageCollection);
                 }
             }
         }
