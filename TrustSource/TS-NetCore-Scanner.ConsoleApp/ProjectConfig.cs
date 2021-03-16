@@ -8,8 +8,6 @@ namespace TS_NetCore_Scanner.ConsoleApp
     {
         public ProjectConfig() { trustSourceAPI = new TrustSourceAPI(); }
 
-        public string ProjectPath { get; set; }
-
         public string Branch { get; set; }
 
         public string Tag { get; set; }

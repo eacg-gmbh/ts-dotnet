@@ -12,8 +12,6 @@ namespace TS_NetFramework_Scanner.Engine
         {
             try
             {
-                // This address is provided to allow Test instances on TrustSource if required.
-                // By default empty string will be coming, so it will maintain its default value.
                 if (!string.IsNullOrEmpty(trustSourceApiUrl))
                 {
                     TrustSourceApiUrl = trustSourceApiUrl;
@@ -27,7 +25,7 @@ namespace TS_NetFramework_Scanner.Engine
                 var client = new WebClient();
 
                 client.Headers.Add("Content-Type", "application/json");
-                client.Headers.Add("user-agent", $"TS-NetCore-Scanner/1.0.0");
+                client.Headers.Add("user-agent", $"TS-NetFramework-Scanner/1.0.0");
                 client.Headers.Add("X-APIKEY", trustSourceApikey);
                 client.Headers.Add("X-USER", trustSourceUserName);
 

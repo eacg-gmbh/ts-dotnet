@@ -37,66 +37,67 @@ namespace TS_NetFramework_Scanner.ConsoleApp
             var trustSourceBranch = app.Option("-b|--branch <optionvalue>", "TrustSource Branch", CommandOptionType.SingleValue);
             var trustSourceTag = app.Option("-t|--tag <optionvalue>", "TrustSource Tag", CommandOptionType.SingleValue);
 
-            string tsUsername, tsApiKey, tsBranch, tsTag;
-            if (trustSourceUserName.HasValue() && trustSourceApiKey.HasValue())
-            {
-                tsUsername = trustSourceUserName.Value();
-                tsApiKey = trustSourceApiKey.Value();
-            }
-            else
-            {
-                tsUsername = ConfigurationManager.AppSettings.Get("TS-Username");
-                tsApiKey = ConfigurationManager.AppSettings.Get("TS-ApiKey");
-            }
-
-            tsBranch = trustSourceBranch.HasValue() ? trustSourceBranch.Value() : ConfigurationManager.AppSettings.Get("TS-Branch");
-            tsTag = trustSourceTag.HasValue() ? trustSourceTag.Value() : ConfigurationManager.AppSettings.Get("TS-Tag");
-
+ 
             // When no commands are specified, this block will execute.
             // This is the main "command"
 
             app.OnExecute(() =>
             {
+                string tsUsername, tsApiKey, tsApiUrl, tsBranch, tsTag;
+                if (trustSourceUserName.HasValue() && trustSourceApiKey.HasValue())
+                {
+                    tsUsername = trustSourceUserName.Value();
+                    tsApiKey = trustSourceApiKey.Value();
+                }
+                else
+                {
+                    tsUsername = ConfigurationManager.AppSettings.Get("TS-Username");
+                    tsApiKey = ConfigurationManager.AppSettings.Get("TS-ApiKey");
+                }
+
+                tsApiUrl = trustSourceApiUrl.HasValue() ? trustSourceApiUrl.Value() : ConfigurationManager.AppSettings.Get("TS-ApiUrl");
+                tsBranch = trustSourceBranch.HasValue() ? trustSourceBranch.Value() :ConfigurationManager.AppSettings.Get("TS-Branch");
+                tsTag = trustSourceTag.HasValue() ? trustSourceTag.Value() : ConfigurationManager.AppSettings.Get("TS-Tag");
+
                 if (!string.IsNullOrEmpty(tsUsername) && !string.IsNullOrEmpty(tsApiKey))
                 {
-                    string projectPath;
+                    string projectPath = projectPathOption.HasValue() ? projectPathOption.Value() : ConfigurationManager.AppSettings.Get("ProjectPath");
 
-                    if (projectPathOption.HasValue())
+                    if (string.IsNullOrEmpty(projectPath))
                     {
-                        projectPath = projectPathOption.Value();
+                        projectPath = Environment.CurrentDirectory;
                     }
-                    else
-                    {
-                        var configProjectPath = ConfigurationManager.AppSettings.Get("ProjectPath");
-
-                        if (string.IsNullOrEmpty(configProjectPath))
-                            projectPath = Environment.CurrentDirectory;
-                        else
-                            projectPath = configProjectPath;
-                    }
-
-                    string apiurl = "";
-                    if (trustSourceApiUrl.HasValue())
-                    {
-                        apiurl = trustSourceApiUrl.Value();
-                    }
-                    else
-                    {
-                        var configTsApiUrl = ConfigurationManager.AppSettings.Get("TS-ApiUrl");
-
-                        if (!string.IsNullOrEmpty(configTsApiUrl))
-                            apiurl = configTsApiUrl;
-                    }
-
+                        
                     Console.WriteLine("Starting Scanning");
                     Console.WriteLine($"Project Path: {projectPath}");
                     Console.WriteLine($"TS Username: {tsUsername}");
                     Console.WriteLine($"TS Api Key: {tsApiKey}");
 
-                    if (!string.IsNullOrEmpty(apiurl))
-                        Console.WriteLine($"TS API Url: {apiurl}");
+                    if (!string.IsNullOrEmpty(tsBranch))
+                        Console.WriteLine($"TS Branch: {tsBranch}");
 
-                    TS_NetFramework_Scanner.Engine.Scanner.Initiate(projectPath, tsUsername, tsApiKey, apiurl, tsBranch, tsTag);
+                    if (!string.IsNullOrEmpty(tsTag))
+                        Console.WriteLine($"TS Tag: {tsTag}");
+
+                    if (!string.IsNullOrEmpty(tsApiUrl))
+                        Console.WriteLine($"TS API Url: {tsApiUrl}");
+/*
+                    try {
+                        TS_NetFramework_Scanner.Engine.Scanner.Initiate(projectPath, tsUsername, tsApiKey, tsApiUrl, tsBranch, tsTag);
+                    } catch (Exception ex)
+                    {
+                        Console.WriteLine("Error occured while scanning NuGet dependencies: {0}", ex.Message);
+                    }
+*/
+                    try
+                    {
+                        TS_NetFramework_Scanner.Engine.VSScanner.Initiate(projectPath, tsUsername, tsApiKey, tsApiUrl, tsBranch, tsTag);
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine("Error occured while scanning VS solution dependencies: {0}", ex.Message);
+                    }
+
                     Console.WriteLine("Scan completed and succefully delivered");
                 }
                 else
