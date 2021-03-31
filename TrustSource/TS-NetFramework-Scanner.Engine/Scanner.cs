@@ -6,10 +6,16 @@ namespace TS_NetFramework_Scanner.Engine
 {
     public class Scanner
     {
-        public static bool Initiate(string projectPath, string trustSourceUserName, string trustSourceApiKey, string trustSourceApiUrl = "", string tsBranch = "", string tsTag = "")
+        public static bool Initiate(string projectPath, string trustSourceApiKey, string trustSourceApiUrl = "", string tsBranch = "", string tsTag = "")
         {
             var dependencyGraphService = new DependencyGraphService();
             var dependencyGraph = dependencyGraphService.GenerateDependencyGraph(projectPath);
+
+            if (dependencyGraph == null)
+            {
+                return false;
+            }
+
             string solutionName = VisualStudioProvider.GetSolutionName(projectPath);
 
             foreach (var project in dependencyGraph.Projects)
@@ -33,7 +39,7 @@ namespace TS_NetFramework_Scanner.Engine
                 string targetJson = TargetSerializer.ConvertToJson(projectTarget);
 
                 // Finally Post Json to Trust Source server
-                TrustSourceProvider.PostScan(targetJson, trustSourceUserName, trustSourceApiKey, trustSourceApiUrl);
+                TrustSourceProvider.PostScan(targetJson, trustSourceApiKey, trustSourceApiUrl);
             }
 
             return true;

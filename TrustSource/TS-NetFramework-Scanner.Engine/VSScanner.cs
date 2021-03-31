@@ -14,23 +14,25 @@ namespace TS_NetFramework_Scanner.Engine
 {
     public class VSScanner
     {
-        public static bool Initiate(string projectPath, string trustSourceUserName, string trustSourceApiKey, string trustSourceApiUrl = "", string tsBranch = "", string tsTag = "")
+        public static void LocateMSBuild()
         {
             MSBuildLocator.RegisterDefaults();
-            return DoInitiate(projectPath, trustSourceUserName, trustSourceApiKey, trustSourceApiUrl, tsBranch, tsTag);
         }
 
-        private static bool DoInitiate(string projectPath, string trustSourceUserName, string trustSourceApiKey, string trustSourceApiUrl = "", string tsBranch = "", string tsTag = "")
+        public static bool Initiate(string projectPath, string trustSourceApiKey, string trustSourceApiUrl = "", string tsBranch = "", string tsTag = "")
         {
             string solutionName = VisualStudioProvider.GetSolutionName(projectPath);
-            
-            SolutionFile solution;
-            if (!projectPath.EndsWith(".sln"))
+            string solutionPath = VisualStudioProvider.GetSolutionPath(projectPath);
+
+            if (String.IsNullOrWhiteSpace(solutionPath))
             {
-                solution = SolutionFile.Parse($"{projectPath}\\{solutionName}.sln" );
-            } else
+                throw new Exception("No VS solution path is provided.");
+            }
+
+            var solution = SolutionFile.Parse(solutionPath);
+            if (solution == null)
             {
-                solution = SolutionFile.Parse(projectPath);
+                throw new Exception("Cannot load VS solution.");
             }
 
             var projectCollection = new ProjectCollection();
@@ -90,7 +92,7 @@ namespace TS_NetFramework_Scanner.Engine
                 string targetJson = TargetSerializer.ConvertToJson(projectTarget);
 
                 // Finally Post Json to Trust Source server
-                TrustSourceProvider.PostScan(targetJson, trustSourceUserName, trustSourceApiKey, trustSourceApiUrl);
+                TrustSourceProvider.PostScan(targetJson, trustSourceApiKey, trustSourceApiUrl);
             }
 
             return true;

@@ -31,5 +31,11 @@ namespace TrustSource.Common
 
 			return activeProject;
 		}
+
+		internal static Solution GetActiveSolution()
+		{
+			DTE dte = Package.GetGlobalService(typeof(SDTE)) as DTE;
+			return dte.Solution;
+		}
 	}
 }

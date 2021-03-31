@@ -21,14 +21,8 @@ namespace TrustSource
 
         public void Initialize()
         {
-            txtTrustSourceUsername.Text = optionsPage.Username;
             txtTrustSourceApiKey.Text = optionsPage.ApiKey;
             chkAskOptional.Checked = optionsPage.AskOptional;
-        }
-
-        private void txtTrustSourceUsername_TextChanged(object sender, EventArgs e)
-        {
-            optionsPage.Username = txtTrustSourceUsername.Text;
         }
 
         private void txtTrustSourceApiKey_TextChanged(object sender, EventArgs e)

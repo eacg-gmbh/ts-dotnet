@@ -31,7 +31,6 @@ namespace TS_NetFramework_Scanner.ConsoleApp
             });
 
             var projectPathOption = app.Option("-p|--path <optionvalue>", ".Net Project Path", CommandOptionType.SingleValue);
-            var trustSourceUserName = app.Option("-user|--username <optionvalue>", "TrustSource Username", CommandOptionType.SingleValue);
             var trustSourceApiKey = app.Option("-key|--ApiKey <optionvalue>", "TrustSource Api Key", CommandOptionType.SingleValue);
             var trustSourceApiUrl = app.Option("-url|--ApiUrl <optionvalue>", "TrustSource Api Url", CommandOptionType.SingleValue);
             var trustSourceBranch = app.Option("-b|--branch <optionvalue>", "TrustSource Branch", CommandOptionType.SingleValue);
@@ -43,15 +42,13 @@ namespace TS_NetFramework_Scanner.ConsoleApp
 
             app.OnExecute(() =>
             {
-                string tsUsername, tsApiKey, tsApiUrl, tsBranch, tsTag;
-                if (trustSourceUserName.HasValue() && trustSourceApiKey.HasValue())
-                {
-                    tsUsername = trustSourceUserName.Value();
+                string tsApiKey, tsApiUrl, tsBranch, tsTag;
+                if (trustSourceApiKey.HasValue())
+                {                   
                     tsApiKey = trustSourceApiKey.Value();
                 }
                 else
-                {
-                    tsUsername = ConfigurationManager.AppSettings.Get("TS-Username");
+                {                   
                     tsApiKey = ConfigurationManager.AppSettings.Get("TS-ApiKey");
                 }
 
@@ -59,7 +56,7 @@ namespace TS_NetFramework_Scanner.ConsoleApp
                 tsBranch = trustSourceBranch.HasValue() ? trustSourceBranch.Value() :ConfigurationManager.AppSettings.Get("TS-Branch");
                 tsTag = trustSourceTag.HasValue() ? trustSourceTag.Value() : ConfigurationManager.AppSettings.Get("TS-Tag");
 
-                if (!string.IsNullOrEmpty(tsUsername) && !string.IsNullOrEmpty(tsApiKey))
+                if (!string.IsNullOrEmpty(tsApiKey))
                 {
                     string projectPath = projectPathOption.HasValue() ? projectPathOption.Value() : ConfigurationManager.AppSettings.Get("ProjectPath");
 
@@ -69,8 +66,7 @@ namespace TS_NetFramework_Scanner.ConsoleApp
                     }
                         
                     Console.WriteLine("Starting Scanning");
-                    Console.WriteLine($"Project Path: {projectPath}");
-                    Console.WriteLine($"TS Username: {tsUsername}");
+                    Console.WriteLine($"Project Path: {projectPath}");                   
                     Console.WriteLine($"TS Api Key: {tsApiKey}");
 
                     if (!string.IsNullOrEmpty(tsBranch))
@@ -81,17 +77,18 @@ namespace TS_NetFramework_Scanner.ConsoleApp
 
                     if (!string.IsNullOrEmpty(tsApiUrl))
                         Console.WriteLine($"TS API Url: {tsApiUrl}");
-/*
+
                     try {
-                        TS_NetFramework_Scanner.Engine.Scanner.Initiate(projectPath, tsUsername, tsApiKey, tsApiUrl, tsBranch, tsTag);
+                        TS_NetFramework_Scanner.Engine.Scanner.Initiate(projectPath, tsApiKey, tsApiUrl, tsBranch, tsTag);
                     } catch (Exception ex)
                     {
                         Console.WriteLine("Error occured while scanning NuGet dependencies: {0}", ex.Message);
                     }
-*/
+
                     try
                     {
-                        TS_NetFramework_Scanner.Engine.VSScanner.Initiate(projectPath, tsUsername, tsApiKey, tsApiUrl, tsBranch, tsTag);
+                        TS_NetFramework_Scanner.Engine.VSScanner.LocateMSBuild();
+                        TS_NetFramework_Scanner.Engine.VSScanner.Initiate(projectPath, tsApiKey, tsApiUrl, tsBranch, tsTag);
                     }
                     catch (Exception ex)
                     {
@@ -102,7 +99,7 @@ namespace TS_NetFramework_Scanner.ConsoleApp
                 }
                 else
                 {
-                    Console.WriteLine("TrustSource Username and/or Api Key are not supplied");
+                    Console.WriteLine("TrustSource API Key is not supplied");
                     // ShowHint() will display: "Specify --help for a list of available options and commands."
                     app.ShowHint();
                 }

@@ -21,6 +21,17 @@ namespace TS_NetFramework_Scanner.Engine
             return "";
         }
 
+        public static string GetSolutionPath(string currentPath)
+        {
+            DirectoryInfo directory = TryGetSolutionDirectoryInfo(currentPath);
+            if (directory != null)
+            {
+                var solutionFile = directory.GetFiles("*.sln").FirstOrDefault();
+                return solutionFile.FullName;
+            }
+            return "";
+        }
+
         public static DirectoryInfo TryGetSolutionDirectoryInfo(string currentPath)
         {
             var directory = new DirectoryInfo(currentPath);

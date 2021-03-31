@@ -8,7 +8,7 @@ namespace TS_NetCore_Scanner.Engine
 {
     public class Scanner
     {
-        public static bool Initiate(string projectPath, string trustSourceUserName, string trustSourceApiKey, string trustSourceApiUrl = "", string branch = "", string tag = "")
+        public static bool Initiate(string projectPath, string trustSourceApiKey, string trustSourceApiUrl = "", string branch = "", string tag = "")
         {
             var dependencyGraphService = new DependencyGraphService();
             var dependencyGraph = dependencyGraphService.GenerateDependencyGraph(projectPath);
@@ -34,7 +34,7 @@ namespace TS_NetCore_Scanner.Engine
                 string targetJson = TargetSerializer.ConvertToJson(projectTarget);
 
                 // Finally Post Json to Trust Source server
-                TrustSourceProvider.PostScan(targetJson, trustSourceUserName, trustSourceApiKey, trustSourceApiUrl);
+                TrustSourceProvider.PostScan(targetJson, trustSourceApiKey, trustSourceApiUrl);
             }
 
             return true;

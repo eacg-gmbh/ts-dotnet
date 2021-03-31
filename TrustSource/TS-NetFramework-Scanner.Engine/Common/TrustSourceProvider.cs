@@ -8,7 +8,7 @@ namespace TS_NetFramework_Scanner.Engine
     {
         private static string TrustSourceApiUrl = $"https://app.trustsource.io/api/v1"; //"https://test-green.trustsource.io/api/v1";
 
-        public static string PostScan(string targetJson, string trustSourceUserName, string trustSourceApikey, string trustSourceApiUrl = "")
+        public static string PostScan(string targetJson, string trustSourceApikey, string trustSourceApiUrl = "")
         {
             try
             {
@@ -27,7 +27,6 @@ namespace TS_NetFramework_Scanner.Engine
                 client.Headers.Add("Content-Type", "application/json");
                 client.Headers.Add("user-agent", $"TS-NetFramework-Scanner/1.0.0");
                 client.Headers.Add("X-APIKEY", trustSourceApikey);
-                client.Headers.Add("X-USER", trustSourceUserName);
 
                 var response = client.UploadString(TrustSourceApiUrl + $"/scans", "POST", targetJson);
 

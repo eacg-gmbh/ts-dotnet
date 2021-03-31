@@ -19,19 +19,10 @@ namespace TrustSource
             }
         }
 
-        private string _username { get; set; }
         private string _apikey { get; set; }
 
         private bool _askOptional { get; set; }
 
-        [Category("TrustSource")]
-        [DisplayName("Username")]
-        [Description("TrustSource Username")]
-        public string Username
-        {
-            get { return _username; }
-            set { _username = value; }
-        }
 
         [Category("TrustSource")]
         [DisplayName("Api Key")]

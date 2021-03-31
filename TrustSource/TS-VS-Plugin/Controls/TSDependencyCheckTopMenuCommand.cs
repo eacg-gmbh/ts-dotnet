@@ -106,9 +106,9 @@ namespace TrustSource
             string OptionalBranch = "", OptionalTag = "";
 
             TrustSourceSettings tsSettings = ((TrustSourceToolsOptions)package).TrustSourceApiSettings;
-            bool IsApiConfigured = !(tsSettings == null || string.IsNullOrEmpty(tsSettings.ApiKey) || string.IsNullOrEmpty(tsSettings.Username));  
+            bool IsApiConfigured = !(tsSettings == null || string.IsNullOrEmpty(tsSettings.ApiKey));
 
-            if(!IsApiConfigured)
+            if (!IsApiConfigured)
             {
                 string message = "TrustSource Api credentials are not avialable. Please go to Tools preferences and set TrustSource credentails.";
                 logger.Debug(message);
@@ -123,7 +123,7 @@ namespace TrustSource
 
                 return;
             }
-            
+
             DTE dte = (DTE)await ServiceProvider.GetServiceAsync(typeof(DTE));
 
             if (dte != null && !dte.Application.Solution.IsOpen)
@@ -144,7 +144,7 @@ namespace TrustSource
 
             IVsStatusbar statusBar = (IVsStatusbar)await ServiceProvider.GetServiceAsync(typeof(SVsStatusbar));
 
-            if(statusBar != null)
+            if (statusBar != null)
             {
                 // Make sure the status bar is not frozen  
                 int frozen;
@@ -179,18 +179,34 @@ namespace TrustSource
             {
                 SolutionBuild builder = dte.Application.Solution.SolutionBuild;
                 SolutionConfiguration2 config = (SolutionConfiguration2)builder.ActiveConfiguration;
+                /*
+                                var activeProject = Helper.GetActiveProject(dte);
+                                if (activeProject == null) 
+                                {
+                                    throw new Exception("No project is selected. Please, select a project in the solution explorer.");
+                                }
 
-                var activeProject = Helper.GetActiveProject(dte);
-                string projectPath = activeProject.FullName;
+                                string projectPath = activeProject.FullName;
+                */
 
-                logger.Debug($"TrustSource Username: {tsSettings.Username}");
+                var activeSolution = dte.Solution;
+                if(activeSolution == null)
+                {
+                    throw new Exception("No active solution is found.");
+                }
+
+                var projectPath = activeSolution.FullName;
+
                 logger.Debug($"TrustSource Api Key: {tsSettings.ApiKey}");
                 logger.Debug($"Project Path: {projectPath}");
                 logger.Debug($"Branch (optional): {OptionalBranch}");
                 logger.Debug($"Tag (optional): {OptionalTag}");
 
-                logger.Debug($"TrustSource scanner started process");
-                Scanner.Initiate(projectPath, tsSettings.Username, tsSettings.ApiKey, "", OptionalBranch, OptionalTag);
+                logger.Debug($"TrustSource NuGet scanner started process");
+                Scanner.Initiate(projectPath, tsSettings.ApiKey, "", OptionalBranch, OptionalTag);
+
+                logger.Debug($"TrustSource NuGet scanner started process");
+                VSScanner.Initiate(projectPath, tsSettings.ApiKey, "", OptionalBranch, OptionalTag);
 
                 statusBar.FreezeOutput(0);
                 statusBar.Clear();
@@ -199,7 +215,7 @@ namespace TrustSource
                 statusBar.Clear();
 
                 logger.Debug($"Scan completed successfully.");
-                System.Windows.Forms.MessageBox.Show("TrustSource scan is completed");
+                System.Windows.Forms.MessageBox.Show("TrustSource scan is completed", "TrustSource");
             }
             catch (Exception ex)
             {
