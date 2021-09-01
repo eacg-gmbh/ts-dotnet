@@ -1,43 +1,32 @@
-﻿using NuGet.ProjectModel;
-using TS_NetFramework_Scanner.Common;
-using TS_NetFramework_Scanner.Engine.NetScanner;
+﻿using TS_NetFramework_Scanner.Common;
 
 namespace TS_NetFramework_Scanner.Engine
 {
     public class Scanner
     {
-        public static bool Initiate(string projectPath, string trustSourceApiKey, string trustSourceApiUrl = "", string tsBranch = "", string tsTag = "")
+        public static bool Initiate(string projectPath, string trustSourceApiKey, string trustSourceApiUrl = "", string tsBranch = "", string tsTag = "") 
         {
-            var dependencyGraphService = new DependencyGraphService();
-            var dependencyGraph = dependencyGraphService.GenerateDependencyGraph(projectPath);
+            VSScanner.LocateMSBuild();
+            
+            var vs = VSScanner.Execute(projectPath, tsBranch, tsTag);
+            var ng = NuGetScanner.Execute(projectPath, tsBranch, tsTag);
 
-            if (dependencyGraph == null)
+            foreach(var target in vs)
             {
-                return false;
+                var index = ng.FindIndex(t => t.moduleId.Equals(target.moduleId));
+                if(index >= 0)
+                {
+                    target.dependencies.AddRange(ng[index].dependencies);
+                    ng.RemoveAt(index);
+                }
             }
 
-            string solutionName = VisualStudioProvider.GetSolutionName(projectPath);
+            vs.AddRange(ng);
 
-            foreach (var project in dependencyGraph.Projects)
+            foreach(var target in vs)
             {
-                Target projectTarget = null;
-
-                if (project.RestoreMetadata.ProjectStyle == ProjectStyle.PackageReference)
-                {
-                    // Process Project Dependencies
-                    projectTarget = NetCoreScannerExcecuter.ProcessDependencies(solutionName, project);
-                }
-                else
-                {
-                    projectTarget = NetFrameWorkScannerExecutor.ProcessDependencies(solutionName, project, projectPath);
-                }
-
-                projectTarget.branch = tsBranch;
-                projectTarget.tag = tsTag;
-
                 // Convert Target into Json string
-                string targetJson = TargetSerializer.ConvertToJson(projectTarget);
-
+                var targetJson = TargetSerializer.ConvertToJson(target);
                 // Finally Post Json to Trust Source server
                 TrustSourceProvider.PostScan(targetJson, trustSourceApiKey, trustSourceApiUrl);
             }

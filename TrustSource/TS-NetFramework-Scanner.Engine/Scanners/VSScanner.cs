@@ -12,15 +12,17 @@ using TS_NetFramework_Scanner.Engine.NetScanner;
 
 namespace TS_NetFramework_Scanner.Engine
 {
-    public class VSScanner
+    class VSScanner
     {
         public static void LocateMSBuild()
         {
             MSBuildLocator.RegisterDefaults();
         }
 
-        public static bool Initiate(string projectPath, string trustSourceApiKey, string trustSourceApiUrl = "", string tsBranch = "", string tsTag = "")
+        public static List<Target> Execute(string projectPath, string tsBranch, string tsTag)
         {
+            var targets = new List<Target>();
+
             string solutionName = VisualStudioProvider.GetSolutionName(projectPath);
             string solutionPath = VisualStudioProvider.GetSolutionPath(projectPath);
 
@@ -40,6 +42,7 @@ namespace TS_NetFramework_Scanner.Engine
             foreach (var project in solution.ProjectsInOrder)
             {
                 Target projectTarget = new Target();
+
                 projectTarget.project = solutionName;
                 projectTarget.moduleId = $"vs:{project.ProjectName}";
                 projectTarget.module = project.ProjectName;
@@ -49,9 +52,11 @@ namespace TS_NetFramework_Scanner.Engine
          
                 var projectDetails = projectCollection.LoadProject(project.AbsolutePath);           
                 if (projectDetails != null)
-                {
+                {                    
                     var projectReferences = projectDetails.GetItems("ProjectReference");
-                    if(projectReferences.Count > 0)
+                    var projectTargetFramework = projectDetails.GetPropertyValue("TargetRuntime");
+
+                    if (projectReferences.Count > 0)
                     {
                         foreach (var projRef in projectReferences)
                         {
@@ -88,14 +93,10 @@ namespace TS_NetFramework_Scanner.Engine
                 if (!string.IsNullOrEmpty(tsTag))
                     projectTarget.tag = tsTag;
 
-                // Convert Target into Json string
-                string targetJson = TargetSerializer.ConvertToJson(projectTarget);
-
-                // Finally Post Json to Trust Source server
-                TrustSourceProvider.PostScan(targetJson, trustSourceApiKey, trustSourceApiUrl);
+                targets.Add(projectTarget);
             }
 
-            return true;
+            return targets;
         }
     }
 }

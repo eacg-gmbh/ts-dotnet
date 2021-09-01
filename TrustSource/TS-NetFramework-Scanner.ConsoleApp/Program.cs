@@ -82,17 +82,7 @@ namespace TS_NetFramework_Scanner.ConsoleApp
                         TS_NetFramework_Scanner.Engine.Scanner.Initiate(projectPath, tsApiKey, tsApiUrl, tsBranch, tsTag);
                     } catch (Exception ex)
                     {
-                        Console.WriteLine("Error occured while scanning NuGet dependencies: {0}", ex.Message);
-                    }
-
-                    try
-                    {
-                        TS_NetFramework_Scanner.Engine.VSScanner.LocateMSBuild();
-                        TS_NetFramework_Scanner.Engine.VSScanner.Initiate(projectPath, tsApiKey, tsApiUrl, tsBranch, tsTag);
-                    }
-                    catch (Exception ex)
-                    {
-                        Console.WriteLine("Error occured while scanning VS solution dependencies: {0}", ex.Message);
+                        Console.WriteLine("Error occured while scanning project dependencies: {0}", ex.Message);
                     }
 
                     Console.WriteLine("Scan completed and succefully delivered");

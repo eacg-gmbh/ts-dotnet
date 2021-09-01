@@ -1,5 +1,5 @@
 <h1>TrustSource plugin for Visual Studio and .NET framework and Core</h1>
-This repository contains TrustSource solution for .NET Framework, .NET Core console projects and Visual Studio plugin for Windows. <br /><br />Plugin is capable of running both .NET Core and .NET Framework scans from directly inside Visual studio. Solution contains separate console projects for .NET Core console to execute .NET Core based cross platform applications. And .NET Framework project which can scan both .NET core and .NET based applications on Windows framework. Usage of these projects are as follows.
+This repository contains TrustSource solution for .NET Framework, .NET Core console projects and Visual Studio plugin for Windows. <br /><br />Plugin is capable of running both .NET Core and .NET Framework scans from directly inside Visual studio. Solution contains separate console projects for .NET Core console to execute .NET Core based cross platform applications, and .NET Framework project which can scan both .NET core and .NET based applications on Windows framework. Usage of these projects are as follows.
 
 <h2>Visual Studio Integration</h2>
 The Visual Studio Plugin can be found in the <a href="https://marketplace.visualstudio.com/items?itemName=TrustSource.vsp4dotnetcore">Visual Studio Marketplace</a>.<br />
@@ -22,24 +22,24 @@ Usage: TS-NetCore-Scanner [options]
 Options:
   -?|-h|--help                    Show help information
   -v|--version                    Show version information
-  -p|--path <optionvalue>         .Net Core Project Path
-  -user|--username <optionvalue>  TrustSource Username
+  -p|--path <optionvalue>         .Net Core Project Path  
   -key|--ApiKey <optionvalue>     TrustSource Api Key
 Scan .NET Core project dependency graph and send to TrustSource<br/>
-Depending on your OS, you may need to execute the application as TS-NetCore-Scanner.exe or 'dotnet TS-NetCore-Scanne.dll'.
+Depending on your OS, you may need to execute the application as TS-NetCore-Scanner.exe or 'dotnet TS-NetCore-Scanne.dll'.<br/>
+In order to use .NET Framework based console tool, use TS-NetFramework-Scanner name. 
 </pre>
+
 <h3>Example</h3>
-<pre>$ dotnet TS-NetCore-Scanner.dll -user "username@domain.com" -key "TrustSource key" -p "C:\Users\user\source\repos\solution"</pre>
+<pre>$ dotnet TS-NetCore-Scanner.dll -key "TrustSource key" -p "C:\Users\user\source\repos\solution"</pre>
 
 In case of current working directory you can ignore path:
-<pre>$ dotnet TS-NetCore-Scanner.dll -user "user@domain.com" -key "TrustSource Key"</pre>
+<pre>$ dotnet TS-NetCore-Scanner.dll -key "TrustSource Key"</pre>
 
 <h2>Configuration files</h2>
 Parameters could also be supplied into configuration files in their specific projects. In .Net Framework configurations are stored in App.config like:
 <br />
 <pre>
   &lt;appSettings>
-    &lt;add key="TS-Username" value="API User Name" />
     &lt;add key="TS-ApiKey" value="API User Key" />
     &lt;add key="TS-ApiUrl" value="" /> <!--// Provide url for testing destinaton or leave empty-->
     &lt;add key="ProjectPath" value="Project Path to Scan" />
@@ -50,7 +50,6 @@ And in .NET Core These settings are stored in AppSettings.json like:
 <pre>
 {
   "TrustSourceAPI": { // TrustSource Credentials
-    "Username": "user",
     "ApiKey": "api",
     "ApiUrl": "" // Provide test API url or leave empty for live scan
   },
@@ -61,8 +60,3 @@ And in .NET Core These settings are stored in AppSettings.json like:
 
 <h1>Contact & Questions</h1>
 Feel free contacting us for more details and questions. We are eager to learn more about your demand. Send an email to support (at) trustsource.io.
-
-
-<h1>Developed by</h1>
-<a href="mailto:nabeel@relliks.com">Muhammad Nabeel</a> [ inabeel@live.com ]
-<br />Technical Lead - <a href="https://relliks.com">Relliks Systems</a>

@@ -14,7 +14,7 @@ namespace TS_NetFramework_Scanner.Engine.NetScanner
 
             Target projectTarget = new Target();
             projectTarget.project = solutionName;
-            projectTarget.moduleId = $"netframework:{project.Name}";
+            projectTarget.moduleId = $"vs:{project.Name}";
             projectTarget.module = project.Name;
             projectTarget.release = project.Version.ToFullString();
 

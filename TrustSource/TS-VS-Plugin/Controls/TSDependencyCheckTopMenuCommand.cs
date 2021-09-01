@@ -202,11 +202,8 @@ namespace TrustSource
                 logger.Debug($"Branch (optional): {OptionalBranch}");
                 logger.Debug($"Tag (optional): {OptionalTag}");
 
-                logger.Debug($"TrustSource NuGet scanner started process");
+                logger.Debug($"TrustSource scanner started process");
                 Scanner.Initiate(projectPath, tsSettings.ApiKey, "", OptionalBranch, OptionalTag);
-
-                logger.Debug($"TrustSource NuGet scanner started process");
-                VSScanner.Initiate(projectPath, tsSettings.ApiKey, "", OptionalBranch, OptionalTag);
 
                 statusBar.FreezeOutput(0);
                 statusBar.Clear();

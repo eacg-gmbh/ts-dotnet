@@ -13,7 +13,7 @@ namespace TS_NetFramework_Scanner.Engine
 
             Target projectTarget = new Target();
             projectTarget.project = solutionName;
-            projectTarget.moduleId = $"netcore:{project.Name}";
+            projectTarget.moduleId = $"vs:{project.Name}";
             projectTarget.module = project.Name;
             projectTarget.release = project.Version.ToFullString();
 
@@ -45,7 +45,7 @@ namespace TS_NetFramework_Scanner.Engine
             dependencies.Add(targetDependency);
 
             targetDependency.name = projectLibrary.Name;
-            targetDependency.key = $"netcore:{projectLibrary.Name}";
+            targetDependency.key = $"nuget:{projectLibrary.Name}";
             targetDependency.versions.Add(projectLibrary.Version.ToNormalizedString());
 
             //targetDependency.checksum = "";
