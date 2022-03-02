@@ -14,7 +14,7 @@ namespace TS_NetCore_Scanner.Engine
 
             Target projectTarget = new Target();
             projectTarget.project = solutionName;
-            projectTarget.moduleId = $"netcore:{project.Name}";
+            projectTarget.moduleId = $"nuget:{project.Name}";
             projectTarget.module = project.Name;
             projectTarget.release = project.Version.ToFullString();
 
@@ -42,11 +42,16 @@ namespace TS_NetCore_Scanner.Engine
 
         private static void ReportDependency(List<Dependency> dependencies, LockFileTargetLibrary projectLibrary, LockFileTarget lockFileTargetFramework, bool AutoReferenced, List<string> packageCollection)
         {
+            if(projectLibrary == null)
+            {
+                return;
+            }
+
             Dependency targetDependency = new Dependency();
             dependencies.Add(targetDependency);
 
             targetDependency.name = projectLibrary.Name;
-            targetDependency.key = $"netcore:{projectLibrary.Name}";
+            targetDependency.key = $"nuget:{projectLibrary.Name}";
             targetDependency.versions.Add(projectLibrary.Version.ToNormalizedString());
 
             //targetDependency.checksum = "";
