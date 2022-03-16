@@ -6,6 +6,18 @@ using TS_Net_Scanner.Engine;
 
 namespace TS_NetCore_Scanner.Engine
 {
+    internal static class LockFileTargetExtension {
+        internal static LockFileTargetLibrary FindLibrary(this LockFileTarget target, string id)
+        {
+            var library = target.Libraries.FirstOrDefault(lib => lib.Name == id);
+            if (library == null)
+            {
+                System.Console.WriteLine($"WARNING: Cannot find library for {id} in assets");
+            }
+            return library;
+        }
+    }
+
     internal class ScannerExcecuter
     {
         internal static Target ProcessDependencies(string solutionName, PackageSpec project)
@@ -30,9 +42,12 @@ namespace TS_NetCore_Scanner.Engine
                 if (lockFileTargetFramework != null)
                 {
                     foreach (var dependency in targetFramework.Dependencies)
-                    {
-                        var projectLibrary = lockFileTargetFramework.Libraries.FirstOrDefault(library => library.Name == dependency.Name);
-                        ReportDependency(projectTarget.dependencies, projectLibrary, lockFileTargetFramework, dependency.AutoReferenced, packageCollection);
+                    {                        
+                        var projectLibrary = lockFileTargetFramework.FindLibrary(dependency.Name);
+                        if (projectLibrary != null)
+                        {
+                            ReportDependency(projectTarget.dependencies, projectLibrary, lockFileTargetFramework, dependency.AutoReferenced, packageCollection);
+                        }                        
                     }
                 }
             }
@@ -42,11 +57,6 @@ namespace TS_NetCore_Scanner.Engine
 
         private static void ReportDependency(List<Dependency> dependencies, LockFileTargetLibrary projectLibrary, LockFileTarget lockFileTargetFramework, bool AutoReferenced, List<string> packageCollection)
         {
-            if(projectLibrary == null)
-            {
-                return;
-            }
-
             Dependency targetDependency = new Dependency();
             dependencies.Add(targetDependency);
 
@@ -66,9 +76,12 @@ namespace TS_NetCore_Scanner.Engine
 
                 foreach (var childDependency in projectLibrary.Dependencies)
                 {
-                    var childLibrary = lockFileTargetFramework.Libraries.FirstOrDefault(library => library.Name == childDependency.Id);
-                    bool SystemReferenced = MetaPackagesSkipper.MetaPackages.Any(x => x == childLibrary.Name) || packageCollection.Any(x => x == childLibrary.Name);
-                    ReportDependency(targetDependency.dependencies, childLibrary, lockFileTargetFramework, SystemReferenced, packageCollection);
+                    var childLibrary = lockFileTargetFramework.FindLibrary(childDependency.Id);
+                    if (childLibrary != null)
+                    {
+                        bool SystemReferenced = MetaPackagesSkipper.MetaPackages.Any(x => x == childLibrary.Name) || packageCollection.Any(x => x == childLibrary.Name);
+                        ReportDependency(targetDependency.dependencies, childLibrary, lockFileTargetFramework, SystemReferenced, packageCollection);
+                    }
                 }
             }
         }
