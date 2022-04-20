@@ -38,31 +38,25 @@ namespace TS_NetCore_Scanner.ConsoleApp
                 return $"Version {Assembly.GetEntryAssembly().GetCustomAttribute<AssemblyInformationalVersionAttribute>().InformationalVersion}";
             });
 
-            var projectPathOption = app.Option("-p|--path <optionvalue>", ".Net Core Project Path", CommandOptionType.SingleValue);
+            var projectPathOption = app.Option("-p|--path <optionvalue>", ".Net Core Project Path", CommandOptionType.SingleValue);            
             var trustSourceApiKey = app.Option("-key|--ApiKey <optionvalue>", "TrustSource Api Key", CommandOptionType.SingleValue);
             var trustSourceApiUrl = app.Option("-url|--ApiUrl <optionvalue>", "TrustSource Api Url", CommandOptionType.SingleValue);
             var trustSourceBranch = app.Option("-b|--branch <optionvalue>", "TrustSource Branch", CommandOptionType.SingleValue);
             var trustSourceTag = app.Option("-t|--tag <optionvalue>", "TrustSource Tag", CommandOptionType.SingleValue);
-
+            var projectName = app.Option("--projectName <optionvalue>", "TrustSource Project Name", CommandOptionType.SingleValue);
+            var skipTransfer = app.Option("--skipTransfer <optionvalue>", "TrustSource Project Name", CommandOptionType.NoValue);
 
             // When no commands are specified, this block will execute.
             // This is the main "command"
 
             app.OnExecute(() =>
-            {
-                string tsApiKey, tsApiUrl, tsBranch, tsTag;
-                if (trustSourceApiKey.HasValue())
-                {
-                    tsApiKey = trustSourceApiKey.Value();
-                }
-                else
-                {
-                    tsApiKey = projectConfig.trustSourceAPI.ApiKey;
-                }
-
-                tsApiUrl = trustSourceApiUrl.HasValue() ? trustSourceApiUrl.Value() : projectConfig.trustSourceAPI.ApiUrl;
-                tsBranch = trustSourceBranch.HasValue() ? trustSourceBranch.Value() : projectConfig.Branch;
-                tsTag = trustSourceTag.HasValue() ? trustSourceTag.Value() : projectConfig.Tag;
+            {                                
+                string tsApiKey = trustSourceApiKey.HasValue() ? trustSourceApiKey.Value(): projectConfig.trustSourceAPI.ApiKey;
+                string tsApiUrl = trustSourceApiUrl.HasValue() ? trustSourceApiUrl.Value() : projectConfig.trustSourceAPI.ApiUrl;
+                string tsBranch = trustSourceBranch.HasValue() ? trustSourceBranch.Value() : projectConfig.Branch;
+                string tsTag = trustSourceTag.HasValue() ? trustSourceTag.Value() : projectConfig.Tag;
+                string tsProjectName = projectName.HasValue() ? projectName.Value() : "";
+                bool tsSkipTransfer = skipTransfer.HasValue();
 
                 if (!string.IsNullOrEmpty(tsApiKey))
                 {
@@ -81,13 +75,19 @@ namespace TS_NetCore_Scanner.ConsoleApp
                     if (!string.IsNullOrEmpty(tsApiUrl))
                         Console.WriteLine($"TS API Url: {tsApiUrl}");
 
-                    TS_NetCore_Scanner.Engine.Scanner.Initiate(projectPath,tsApiKey, tsApiUrl, tsBranch, tsTag);
-                    Console.WriteLine("Scan completed and succefully delivered");
+                    TS_NetCore_Scanner.Engine.Scanner.Initiate(projectPath, tsProjectName, tsApiKey, tsApiUrl, tsBranch, tsTag, tsSkipTransfer);
+                    if (!tsSkipTransfer)
+                    {
+                        Console.WriteLine($"Scan completed and succefully delivered");
+                    }
+                    else
+                    {
+                        Console.WriteLine($"Scan completed");
+                    }                    
                 }
                 else
                 {
-                    Console.WriteLine("TrustSource Username and/or Api Key are not supplied");
-                    // ShowHint() will display: "Specify --help for a list of available options and commands."
+                    Console.WriteLine("TrustSource Username and/or Api Key are not supplied");                    
                     app.ShowHint();
                 }
 

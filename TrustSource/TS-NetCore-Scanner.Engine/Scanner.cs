@@ -8,11 +8,12 @@ namespace TS_NetCore_Scanner.Engine
 {
     public class Scanner
     {
-        public static bool Initiate(string projectPath, string trustSourceApiKey, string trustSourceApiUrl = "", string branch = "", string tag = "")
+        public static bool Initiate(string projectPath, string projectName, string trustSourceApiKey, string trustSourceApiUrl = "", string branch = "", string tag = "", bool skipTransfer = false)
         {
             var dependencyGraphService = new DependencyGraphService();
             var dependencyGraph = dependencyGraphService.GenerateDependencyGraph(projectPath);
-            string solutionName = VisualStudioProvider.GetSolutionName(projectPath);
+
+            string tsProjectName = string.IsNullOrEmpty(projectName) ? VisualStudioProvider.GetSolutionName(projectPath): projectName;
 
             if (!dependencyGraph.Projects.Any(p => p.RestoreMetadata.ProjectStyle == ProjectStyle.PackageReference))
             {
@@ -22,7 +23,7 @@ namespace TS_NetCore_Scanner.Engine
             foreach (var project in dependencyGraph.Projects.Where(p => p.RestoreMetadata.ProjectStyle == ProjectStyle.PackageReference))
             {
                 // Process Project Dependencies
-                Target projectTarget = ScannerExcecuter.ProcessDependencies(solutionName, project);
+                Target projectTarget = ScannerExcecuter.ProcessDependencies(tsProjectName, project);
 
                 if (!string.IsNullOrEmpty(branch))
                     projectTarget.branch = branch;
@@ -34,7 +35,15 @@ namespace TS_NetCore_Scanner.Engine
                 string targetJson = TargetSerializer.ConvertToJson(projectTarget);
 
                 // Finally Post Json to Trust Source server
-                TrustSourceProvider.PostScan(targetJson, trustSourceApiKey, trustSourceApiUrl);
+                if (!skipTransfer)
+                {
+                    TrustSourceProvider.PostScan(targetJson, trustSourceApiKey, trustSourceApiUrl);
+                }
+                else
+                {
+                    Console.WriteLine(targetJson);
+                }
+                
             }
 
             return true;

@@ -14,11 +14,11 @@ namespace TS_NetCore_Scanner.Engine
     {
         public DependencyGraphSpec GenerateDependencyGraph(string projectPath)
         {
-            var dotNetRunner = new DotNetRunner();
+            var dotNetRunner = new DotNetRunner("msbuild");
 
             string dgOutput = Path.Combine(Path.GetTempPath(), Path.GetTempFileName());
 
-            string[] arguments = new[] { "msbuild", $"\"{projectPath}\"", "/t:GenerateRestoreGraphFile", $"/p:RestoreGraphOutputPath=\"{dgOutput}\"" };
+            string[] arguments = new[] {$"\"{projectPath}\"", "/t:GenerateRestoreGraphFile", $"/p:RestoreGraphOutputPath=\"{dgOutput}\"" };
 
             var runStatus = dotNetRunner.Run(Path.GetDirectoryName(projectPath), arguments);
 

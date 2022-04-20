@@ -14,7 +14,7 @@ namespace TS_NetCore_Scanner.Engine
             {
                 if (!string.IsNullOrEmpty(trustSourceApiUrl))
                 {
-                    TrustSourceApiUrl = trustSourceApiUrl;
+                    TrustSourceApiUrl = $"{trustSourceApiUrl}/api/v1";
                 }
 
                 if (string.IsNullOrEmpty(TrustSourceApiUrl))

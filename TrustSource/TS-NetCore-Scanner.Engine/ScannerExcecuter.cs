@@ -20,12 +20,12 @@ namespace TS_NetCore_Scanner.Engine
 
     internal class ScannerExcecuter
     {
-        internal static Target ProcessDependencies(string solutionName, PackageSpec project)
+        internal static Target ProcessDependencies(string tsProjectName, PackageSpec project)
         {
             List<string> packageCollection = new List<string>();
 
             Target projectTarget = new Target();
-            projectTarget.project = solutionName;
+            projectTarget.project = tsProjectName;
             projectTarget.moduleId = $"nuget:{project.Name}";
             projectTarget.module = project.Name;
             projectTarget.release = project.Version.ToFullString();

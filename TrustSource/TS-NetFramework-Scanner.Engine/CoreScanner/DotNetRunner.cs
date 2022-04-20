@@ -10,9 +10,16 @@ namespace TS_NetFramework_Scanner.Engine
 {
     internal class DotNetRunner
     {
+        private readonly string fileName;
+
+        public DotNetRunner(string fileName = "dotnet")
+        {
+            this.fileName = fileName;
+        }
+
         public RunStatus Run(string workingDirectory, string[] arguments)
         {
-            var psi = new ProcessStartInfo("dotnet", string.Join(" ", arguments))
+            var psi = new ProcessStartInfo(fileName, string.Join(" ", arguments))
             {
                 WorkingDirectory = workingDirectory,
                 UseShellExecute = false,
