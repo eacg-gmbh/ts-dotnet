@@ -44,19 +44,26 @@ namespace TS_NetCore_Scanner.ConsoleApp
             var trustSourceBranch = app.Option("-b|--branch <optionvalue>", "TrustSource Branch", CommandOptionType.SingleValue);
             var trustSourceTag = app.Option("-t|--tag <optionvalue>", "TrustSource Tag", CommandOptionType.SingleValue);
             var projectName = app.Option("--projectName <optionvalue>", "TrustSource Project Name", CommandOptionType.SingleValue);
-            var skipTransfer = app.Option("--skipTransfer <optionvalue>", "TrustSource Project Name", CommandOptionType.NoValue);
+            var moduleName = app.Option("--moduleName <optionvalue>", "TrustSource Module Name (when --solutionAsModule is on)", CommandOptionType.SingleValue);
+            var skipTransfer = app.Option("--skipTransfer", "Skip transfer of scan results to the TrustSource service", CommandOptionType.NoValue);
+            var solutionAsModule = app.Option("--solutionAsModule", "Process the VS solution as one module", CommandOptionType.NoValue);
 
             // When no commands are specified, this block will execute.
             // This is the main "command"
 
             app.OnExecute(() =>
-            {                                
+            {
+                // Params
                 string tsApiKey = trustSourceApiKey.HasValue() ? trustSourceApiKey.Value(): projectConfig.trustSourceAPI.ApiKey;
                 string tsApiUrl = trustSourceApiUrl.HasValue() ? trustSourceApiUrl.Value() : projectConfig.trustSourceAPI.ApiUrl;
                 string tsBranch = trustSourceBranch.HasValue() ? trustSourceBranch.Value() : projectConfig.Branch;
                 string tsTag = trustSourceTag.HasValue() ? trustSourceTag.Value() : projectConfig.Tag;
                 string tsProjectName = projectName.HasValue() ? projectName.Value() : "";
+                string tsModuleName = moduleName.HasValue() ? moduleName.Value() : "";
+
+                // Flags
                 bool tsSkipTransfer = skipTransfer.HasValue();
+                bool tsSolutionAsModule = solutionAsModule.HasValue();
 
                 if (!string.IsNullOrEmpty(tsApiKey))
                 {
@@ -75,7 +82,7 @@ namespace TS_NetCore_Scanner.ConsoleApp
                     if (!string.IsNullOrEmpty(tsApiUrl))
                         Console.WriteLine($"TS API Url: {tsApiUrl}");
 
-                    TS_NetCore_Scanner.Engine.Scanner.Initiate(projectPath, tsProjectName, tsApiKey, tsApiUrl, tsBranch, tsTag, tsSkipTransfer);
+                    Engine.Scanner.Initiate(projectPath, tsProjectName, tsModuleName, tsApiKey, tsApiUrl, tsBranch, tsTag, tsSkipTransfer, tsSolutionAsModule);
                     if (!tsSkipTransfer)
                     {
                         Console.WriteLine($"Scan completed and succefully delivered");

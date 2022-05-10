@@ -1,8 +1,0 @@
-{
-  "profiles": {
-    "TS-NetCore-Scanner.ConsoleApp": {
-      "commandName": "Project",
-      "commandLineArgs": "-user \"gmn@eacg.de\" -key \"d56a529c-fb9b-46f2-b726-ec3f57acdb84\" -p \"Z:\\ts-dotnet\\Trustsource\""
-    }
-  }
-}
