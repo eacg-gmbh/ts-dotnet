@@ -36,6 +36,11 @@ namespace TS_NetCore_Scanner.Engine
             var lockFileService = new LockFileService();
             var lockFile = lockFileService.GetLockFile(project.FilePath, project.RestoreMetadata.OutputPath);
 
+            if (lockFile == null) {
+                System.Console.WriteLine($"WARNING: Cannot restore lock file for the project {project.Name}.");
+                return projectTarget;
+            }
+
             foreach (var targetFramework in project.TargetFrameworks)
             {
                 var lockFileTargetFramework = lockFile.Targets.FirstOrDefault(t => t.TargetFramework.Equals(targetFramework.FrameworkName));

@@ -13,9 +13,9 @@ namespace TS_NetCore_Scanner.Engine
         public LockFile GetLockFile(string projectPath, string outputPath)
         {
             // Run the restore command
-            var dotNetRunner = new DotNetRunner();
+            DotNetRunner dotNetRunner = new DotNetRunner("nuget");
             string[] arguments = new[] { "restore", $"\"{projectPath}\"" };
-            var runStatus = dotNetRunner.Run(Path.GetDirectoryName(projectPath), arguments);
+            _ = dotNetRunner.Run(Path.GetDirectoryName(projectPath), arguments);
 
             // Load the lock file
             string lockFilePath = Path.Combine(outputPath, "project.assets.json");
