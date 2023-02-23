@@ -4,6 +4,7 @@ using NuGet.ProjectModel;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Runtime.InteropServices;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,15 +15,25 @@ namespace TS_NetCore_Scanner.Engine
     {
         public DependencyGraphSpec GenerateDependencyGraph(string projectPath)
         {
-            var dotNetRunner = new DotNetRunner("msbuild");
-
+            var dotNetRunner = new DotNetRunner("msbuild", !RuntimeInformation.IsOSPlatform(OSPlatform.OSX));
+            
             string dgOutput = Path.Combine(Path.GetTempPath(), Path.GetTempFileName());
 
             string[] arguments = new[] {$"\"{projectPath}\"", "/t:GenerateRestoreGraphFile", $"/p:RestoreGraphOutputPath=\"{dgOutput}\"" };
 
-            var runStatus = dotNetRunner.Run(Path.GetDirectoryName(projectPath), arguments);
+            bool success;
 
-            if (runStatus.IsSuccess)
+            try
+            {
+                success = dotNetRunner.Run(Path.GetDirectoryName(projectPath), arguments).IsSuccess;
+            }
+            catch (Exception ex)
+            {
+                System.Console.WriteLine("An error occured while executing MSBuild");
+                throw ex;
+            }
+
+            if (success)
             {
                 string dependencyGraphText = File.ReadAllText(dgOutput);
                 return new DependencyGraphSpec(JsonConvert.DeserializeObject<JObject>(dependencyGraphText));

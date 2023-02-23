@@ -11,15 +11,20 @@ namespace TS_NetCore_Scanner.Engine
     internal class DotNetRunner
     {
         private readonly string fileName;
+        private readonly bool useDotnet;
 
-        public DotNetRunner(string fileName = "dotnet")
+        public DotNetRunner(string fileName = "dotnet", bool useDotnetToExecute = false)
         {
             this.fileName = fileName;
+            this.useDotnet = useDotnetToExecute;
         }
 
         public RunStatus Run(string workingDirectory, string[] arguments)
         {
-            var psi = new ProcessStartInfo(fileName, string.Join(" ", arguments))
+            var fileName = useDotnet ? "dotnet" : this.fileName;
+            var args = (useDotnet ? this.fileName + " " : "") + string.Join(" ", arguments);
+
+            var psi = new ProcessStartInfo(fileName, args)
             {
                 WorkingDirectory = workingDirectory,
                 UseShellExecute = false,

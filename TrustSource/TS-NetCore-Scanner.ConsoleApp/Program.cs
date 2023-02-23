@@ -1,9 +1,6 @@
 ﻿using Microsoft.Extensions.CommandLineUtils;
 using Microsoft.Extensions.Configuration;
 using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.IO;
 using System.Reflection;
 
 namespace TS_NetCore_Scanner.ConsoleApp
@@ -47,6 +44,7 @@ namespace TS_NetCore_Scanner.ConsoleApp
             var moduleName = app.Option("--moduleName <optionvalue>", "TrustSource Module Name (when --solutionAsModule is on)", CommandOptionType.SingleValue);
             var skipTransfer = app.Option("--skipTransfer", "Skip transfer of scan results to the TrustSource service", CommandOptionType.NoValue);
             var solutionAsModule = app.Option("--solutionAsModule", "Process the VS solution as one module", CommandOptionType.NoValue);
+            
 
             // When no commands are specified, this block will execute.
             // This is the main "command"
@@ -64,7 +62,7 @@ namespace TS_NetCore_Scanner.ConsoleApp
                 // Flags
                 bool tsSkipTransfer = skipTransfer.HasValue();
                 bool tsSolutionAsModule = solutionAsModule.HasValue();
-
+                
                 if (!string.IsNullOrEmpty(tsApiKey))
                 {
                     string projectPath = projectPathOption.HasValue() ? projectPathOption.Value() : Environment.CurrentDirectory;
