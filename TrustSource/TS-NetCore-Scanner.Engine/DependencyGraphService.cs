@@ -21,11 +21,11 @@ namespace TS_NetCore_Scanner.Engine
 
             string[] arguments = new[] {$"\"{projectPath}\"", "/t:GenerateRestoreGraphFile", $"/p:RestoreGraphOutputPath=\"{dgOutput}\"" };
 
-            bool success;
+            RunStatus runStatus;
 
             try
             {
-                success = dotNetRunner.Run(Path.GetDirectoryName(projectPath), arguments).IsSuccess;
+                runStatus = dotNetRunner.Run(Path.GetDirectoryName(projectPath), arguments);
             }
             catch (Exception ex)
             {
@@ -33,7 +33,7 @@ namespace TS_NetCore_Scanner.Engine
                 throw ex;
             }
 
-            if (success)
+            if (runStatus.IsSuccess)
             {
                 string dependencyGraphText = File.ReadAllText(dgOutput);
                 return new DependencyGraphSpec(JsonConvert.DeserializeObject<JObject>(dependencyGraphText));
