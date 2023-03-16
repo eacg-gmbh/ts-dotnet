@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>net7.0</TargetFramework>
     <RootNamespace>TS_NetCore_Scanner.ConsoleApp</RootNamespace>
     <AssemblyName>TS-NetCore-Scanner</AssemblyName>
     <StartupObject>TS_NetCore_Scanner.ConsoleApp.Program</StartupObject>
