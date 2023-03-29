@@ -81,14 +81,6 @@ namespace TS_NetCore_Scanner.ConsoleApp
                         Console.WriteLine($"TS API Url: {tsApiUrl}");
 
                     Engine.Scanner.Initiate(projectPath, tsProjectName, tsModuleName, tsApiKey, tsApiUrl, tsBranch, tsTag, tsSkipTransfer, tsSolutionAsModule);
-                    if (!tsSkipTransfer)
-                    {
-                        Console.WriteLine($"Scan completed and succefully delivered");
-                    }
-                    else
-                    {
-                        Console.WriteLine($"Scan completed");
-                    }                    
                 }
                 else
                 {

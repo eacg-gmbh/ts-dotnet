@@ -45,7 +45,8 @@ namespace TS_NetCore_Scanner.Engine
                 // Finally Post Json to Trust Source server
                 if (!skipTransfer)
                 {
-                    TrustSourceProvider.PostScan(targetJson, trustSourceApiKey, trustSourceApiUrl);
+                    var response = TrustSourceProvider.PostScan(targetJson, trustSourceApiKey, trustSourceApiUrl);
+                    Console.WriteLine(response);
                 }
                 else
                 {
